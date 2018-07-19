@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="${tableItem.beanName}">
+	<typeAlias alias="${alias}" type="${modelPath}.${tableItem.beanName}" />
+	<resultMap id="${alias}Result" class="${alias}">
+		<!-- NamespaceModel -->
+		<result property="id" column="ID" javaType="long" jdbcType="NUMERIC" nullValue="0" />
+<#list tableItem.columnList as columnItem>
+<#if columnItem.fieldName!='id'>
+		<result property="${columnItem.fieldName}" column="${columnItem.columnName}" javaType="${columnItem.javaType}" />
+</#if>
+</#list>
+	</resultMap>
+	<sql id="sql_sequence">
+		<![CDATA[
+		SELECT LAST_INSERT_ID() AS ID
+		]]>
+	</sql>
+	<select id="sequence">
+		<include refid="sql_sequence" />
+	</select>
+	<insert id="create" parameterClass="${alias}">
+		
+		<![CDATA[
+		INSERT INTO ${tableItem.tableName} (
+			${tableItem.primaryKey.columnName}
+<#list tableItem.columnList as columnItem>
+			,${columnItem.columnName}
+</#list>
+		) VALUES (
+			#${tableItem.primaryKey.fieldName}#
+<#list tableItem.columnList as columnItem>
+			,#${columnItem.fieldName}#
+</#list>
+		)
+		]]>
+		<selectKey keyProperty="id" resultClass="long">
+			<include refid="sql_sequence" />
+		</selectKey>
+	</insert>
+	<update id="update" parameterClass="${alias}">
+		<![CDATA[
+		UPDATE ${tableItem.tableName} SET
+<#list tableItem.columnList as columnItem>
+<#if columnItem_index==0>
+			${columnItem.columnName}=#${columnItem.fieldName}#
+<#else>
+			, ${columnItem.columnName}=#${columnItem.fieldName}#
+</#if>
+</#list>
+		WHERE ${tableItem.primaryKey.columnName}=#${tableItem.primaryKey.fieldName}#
+		]]>
+	</update>
+	<delete id="remove" parameterClass="${alias}">
+		<![CDATA[
+			DELETE FROM ${tableItem.tableName} WHERE ${tableItem.primaryKey.columnName}=#${tableItem.primaryKey.fieldName}#
+		]]>
+	</delete>
+	<select id="findById" parameterClass="${tableItem.primaryKey.javaType}" resultMap="${alias}Result">
+		<![CDATA[
+			SELECT * FROM ${tableItem.tableName} A WHERE ${tableItem.primaryKey.columnName}=#${tableItem.primaryKey.fieldName}#
+		]]>
+	</select>
+	<sql id="sql_where">
+		<dynamic prepend="WHERE">
+			
+		</dynamic>
+	</sql>
+	<sql id="sql_from">
+		FROM ${tableItem.tableName} A
+		<include refid="sql_where" />
+	</sql>
+	<select id="findAll" resultMap="${alias}Result">
+		<![CDATA[ SELECT * ]]>
+		<include refid="sql_from" />
+	</select>
+	<select id="find" resultMap="${alias}Result">
+		<![CDATA[ SELECT * ]]>
+		<include refid="sql_from" />
+		<isNotNull property="_orderBy">
+			order by $_orderBy$
+		</isNotNull>
+		<isGreaterThan property="_maxResult" compareValue="0">
+			<![CDATA[ limit #_skipResult#, #_pageSize#]]>
+		</isGreaterThan>
+	</select>
+	<select id="find_count" parameterClass="java.util.Map" resultClass="int">
+		<![CDATA[ SELECT COUNT(*) ]]>
+		<include refid="sql_from" />
+	</select>
+</sqlMap>
