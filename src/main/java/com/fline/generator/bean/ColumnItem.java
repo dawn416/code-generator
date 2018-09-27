@@ -15,6 +15,7 @@ public class ColumnItem {
 	private String fieldName;
 	private String jdbcType;
 	private String javaType;
+	private String remarks;
 
 	/**
 	 * @param columnName
@@ -140,6 +141,14 @@ public class ColumnItem {
 	 */
 	public String getJdbcType() {
 		return jdbcType;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
 
 	/**

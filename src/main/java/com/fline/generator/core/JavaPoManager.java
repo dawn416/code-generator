@@ -40,7 +40,8 @@ public class JavaPoManager {
 		/*
 		 * 拼接属性声明源码 例如：private String name; 拼接时候注意排版
 		 */
-		jfgs.setFieldInfo("\tprivate " + column.getJavaType() + " " + column.getFieldName() + ";\n");
+		jfgs.setFieldInfo("\t/**\n\t * " + column.getRemarks() + "\n\t */\n\tprivate " + column.getJavaType() + " "
+				+ column.getFieldName() + ";\n");
 
 		/*
 		 * 拼接get方法源码 例如： public String getName() { return name; }

@@ -69,8 +69,10 @@ public class TableContext {
 						fieldName = columnName;
 					}
 					String dbType = columnRs.getString("TYPE_NAME");
+					String remarks = columnRs.getString("REMARKS");
 					String javaType = convert.dbType2JavaType(dbType);
 					ColumnItem columnItem = new ColumnItem(columnName, fieldName, dbType, javaType);
+					columnItem.setRemarks(remarks);
 					if (tableItem.getPrimaryKey() == null) {
 						tableItem.getColumnList().add(columnItem);
 					} else if (!columnItem.getColumnName()

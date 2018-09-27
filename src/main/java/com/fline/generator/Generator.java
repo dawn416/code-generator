@@ -24,43 +24,43 @@ public class Generator {
 	/**
 	 * 项目根目录
 	 */
-	public final static String modeProject = "src";
+	public static String modeProject = "src";
 	/**
 	 * model目录
 	 */
-	public final static String modelPackage = "com.fline.promise.access.model";
+	public static String modelPackage = "com.fline.promise.access.model";
 	/**
 	 * ibatis的xml目录
 	 */
-	public final static String xmlPackage = "com.fline.promise.access.model.mysql";
+	public static String xmlPackage = "com.fline.promise.access.model.mysql";
 	/**
 	 * dao目录
 	 */
-	public final static String daoPackage = "com.fline.promise.access.service";
+	public static String daoPackage = "com.fline.promise.access.service";
 	/**
 	 * dao实现类目录
 	 */
-	public final static String daoImplPackage = "com.fline.promise.access.service.impl";
+	public static String daoImplPackage = "com.fline.promise.access.service.impl";
 	/**
 	 * 驱动
 	 */
-	public final static String DRIVER = "com.mysql.jdbc.Driver";
+	public static String DRIVER = "com.mysql.jdbc.Driver";
 	/**
 	 * url
 	 */
-	public final static String URL = "jdbc:mysql://127.0.0.1:3306/saizhi?useUnicode=true&characterEncoding=UTF8";
+	public static String URL = "jdbc:mysql://127.0.0.1:3306/saizhi?useUnicode=true&characterEncoding=UTF8";
 	/**
 	 * 连接数据库的用户名
 	 */
-	public final static String USER = "root";
+	public static String USER = "root";
 	/**
 	 * 连接数据库的密码
 	 */
-	public final static String PASS = "123456";
+	public static String PASS = "123456";
 	/**
 	 * 命名规则是否为下划线转驼峰命名法
 	 */
-	public final static boolean CAMEL = false;
+	public static boolean CAMEL = false;
 
 	/**
 	 * 所有表中必须有且仅有一个主键id,
@@ -75,9 +75,9 @@ public class Generator {
 	 */
 	public static void main(String[] args) throws Exception {
 		// 要生成的表名，null或""表示生成所有表,
-		String tableName = "c_project_unit";
+		String tableName = "area";
 		// javabean名，必须在tableName不为空时使用
-		String BeanName = "ProjectUnit";
+		String BeanName = "Area";
 
 		Generator g = new Generator();
 		g.generate(tableName, BeanName);
