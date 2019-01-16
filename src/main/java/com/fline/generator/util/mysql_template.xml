@@ -7,7 +7,7 @@
 		<result property="id" column="ID" javaType="long" jdbcType="NUMERIC" nullValue="0" />
 <#list tableItem.columnList as columnItem>
 <#if columnItem.fieldName!='id'>
-		<result property="${columnItem.fieldName}" column="${columnItem.columnName}" javaType="${columnItem.javaType}" />
+		<result property="${columnItem.fieldName}" column="${columnItem.columnName}" javaType="${columnItem.javaType}" <#if columnItem.javaType=="long" || columnItem.javaType=="int"> nullValue="0"</#if>/>
 </#if>
 </#list>
 	</resultMap>
@@ -23,14 +23,22 @@
 		
 		<![CDATA[
 		INSERT INTO ${tableItem.tableName} (
-			${tableItem.primaryKey.columnName}
 <#list tableItem.columnList as columnItem>
-			,${columnItem.columnName}
+    <#if columnItem_index==0>
+        ${columnItem.columnName}
+    </#if>
+	<#if columnItem_index!=0>
+        ,${columnItem.columnName}
+    </#if>
 </#list>
 		) VALUES (
-			#${tableItem.primaryKey.fieldName}#
 <#list tableItem.columnList as columnItem>
-			,#${columnItem.fieldName}#
+    <#if columnItem_index==0>
+        #${columnItem.fieldName}#
+    </#if>
+    <#if columnItem_index!=0>
+        ,#${columnItem.fieldName}#
+    </#if>
 </#list>
 		)
 		]]>
@@ -56,7 +64,7 @@
 			DELETE FROM ${tableItem.tableName} WHERE ${tableItem.primaryKey.columnName}=#${tableItem.primaryKey.fieldName}#
 		]]>
 	</delete>
-	<select id="findById" parameterClass="${tableItem.primaryKey.javaType}" resultMap="${alias}Result">
+	<select id="findById" parameterClass="long" resultMap="${alias}Result">
 		<![CDATA[
 			SELECT * FROM ${tableItem.tableName} A WHERE ${tableItem.primaryKey.columnName}=#${tableItem.primaryKey.fieldName}#
 		]]>

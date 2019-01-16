@@ -6,7 +6,7 @@ package com.fline.generator.typeconvertor;
  * <h1>MySQL数据类型和Java数据类型的转换</h1>
  * 
  */
-public class MySQLTypeConvertor implements TypeConvertor {
+public class MySQLTypeConvertor2 implements TypeConvertor {
 
 	@Override
 	public String dbType2JavaType(String columnType) {
@@ -19,12 +19,12 @@ public class MySQLTypeConvertor implements TypeConvertor {
 		case "tinyint":
 		case "smallint":
 		case "integer":
-			return "int";
+			return "Integer";
 		case "bigint":
-			return "long";
+			return "Long";
 		case "double":
 		case "float":
-			return "double";
+			return "Double";
 		case "date":
 		case "datetime":
 		case "time":

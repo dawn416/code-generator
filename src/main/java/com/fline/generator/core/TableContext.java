@@ -83,7 +83,6 @@ public class TableContext {
 				DBManager.close(columnRs);
 				// 查询表中的主键
 				pkRs = dbmd.getPrimaryKeys(null, "%", tableName);
-
 				while (pkRs.next()) {
 					String pkName = pkRs.getString("COLUMN_NAME");
 					for (ColumnItem cItem : tableItem.getColumnList()) {
