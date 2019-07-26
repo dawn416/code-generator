@@ -6,7 +6,6 @@ package com.fline.generator.core;
 
 import com.fline.generator.Generator;
 import com.fline.generator.bean.TableItem;
-import com.fline.generator.util.JavaFileUtil;
 
 /**
  * @since 2017年12月7日 下午3:32:10
@@ -24,8 +23,9 @@ public class JavaDaoManager {
 	 */
 	public static void createDaoFile(TableItem tableItem) {
 		String content = createDao(tableItem);
-		String path = JavaFileUtil.daoPath + "\\" + tableItem.getBeanName() + "AccessService.java";
-		JavaFileUtil.createJavaFile(path, content);
+		// String path = JavaFileUtil.daoPath + "\\" + tableItem.getBeanName() +
+		// "AccessService.java";
+		// JavaFileUtil.createJavaFile(path, content);
 		System.out.println("生成" + tableItem.getBeanName() + "AccessService.java文件成功");
 	}
 
@@ -36,8 +36,9 @@ public class JavaDaoManager {
 	 */
 	public static void createDaoImplFile(TableItem tableItem) {
 		String content = createDaoImpl(tableItem);
-		String path = JavaFileUtil.daoImplPath + "\\" + tableItem.getBeanName() + "AccessServiceImpl.java";
-		JavaFileUtil.createJavaFile(path, content);
+		// String path = JavaFileUtil.daoImplPath + "\\" +
+		// tableItem.getBeanName() + "AccessServiceImpl.java";
+		// JavaFileUtil.createJavaFile(path, content);
 		System.out.println("生成" + tableItem.getBeanName() + "AccessServiceImpl.java文件成功");
 	}
 

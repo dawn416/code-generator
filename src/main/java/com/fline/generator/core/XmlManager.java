@@ -10,7 +10,6 @@ import java.util.Map;
 import com.fline.generator.Generator;
 import com.fline.generator.bean.TableItem;
 import com.fline.generator.util.FreemarkerUtil;
-import com.fline.generator.util.JavaFileUtil;
 import com.fline.generator.util.StringUtils;
 
 /**
@@ -28,8 +27,9 @@ public class XmlManager {
 		dataMap.put("alias", StringUtils.uncapitalize(tableItem.getBeanName()));
 		dataMap.put("excluArr", JavaPoManager.excluArr);
 		String result = FreemarkerUtil.createXmlFile("", templateName, "UTF-8", dataMap);
-		String outPath = JavaFileUtil.xmlPath + "\\" + tableItem.getBeanName() + ".xml";
-		JavaFileUtil.createJavaFile(outPath, result);
+		// String outPath = JavaFileUtil.xmlPath + "\\" +
+		// tableItem.getBeanName() + ".xml";
+		// JavaFileUtil.createJavaFile(outPath, result);
 		System.out.println("生成xml文件成功");
 	}
 }

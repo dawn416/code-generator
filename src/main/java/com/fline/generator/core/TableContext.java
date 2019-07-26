@@ -20,7 +20,7 @@ import com.fline.generator.util.StringUtils;
  */
 public class TableContext {
 
-	public static List<TableItem> tables = new ArrayList<TableItem>();
+	public static final List<TableItem> TABLES = new ArrayList<>();
 
 	/**
 	 * @param convert
@@ -33,9 +33,6 @@ public class TableContext {
 	 */
 	public static void init(TypeConvertor convert, String tableName, String className) throws Exception {
 
-		ResultSet tableRs = null;
-		ResultSet pkRs = null;
-		ResultSet columnRs = null;
 		try (Connection conn = DBManager.createConn();) {
 			// DatabaseMetaData 封装了数据库的源信息
 			DatabaseMetaData dbmd = conn.getMetaData();
@@ -43,59 +40,58 @@ public class TableContext {
 			if (!StringUtils.isEmpty(tableName)) {
 				tablePattern = tableName;
 			}
-			tableRs = dbmd.getTables(null, null, tablePattern, new String[] { "TABLE" });
-			while (tableRs.next()) {
-				tableName = tableRs.getString("TABLE_NAME");
-				tableName = tableName.toUpperCase();
-				System.out.println("加载" + tableName + "表信息。。。");
-				String beanName = null;
-				if (StringUtils.isEmpty(className)) {
-					beanName = StringUtils.underline2Camel(tableName, false);
-				} else {
-					beanName = className;
-				}
-				TableItem tableItem = new TableItem(tableName, beanName, null, new ArrayList<ColumnItem>());
-
-				tables.add(tableItem);
-
-				// 查询表中的所有字段
-				columnRs = dbmd.getColumns(null, "%", tableName, "%");
-				while (columnRs.next()) {
-					String columnName = columnRs.getString("COLUMN_NAME");
-					String fieldName = null;
-					if (Generator.CAMEL) {
-						fieldName = StringUtils.underline2Camel(columnName, true);
+			try (ResultSet tableRs = dbmd.getTables(null, null, tablePattern, new String[] { "TABLE" });) {
+				while (tableRs.next()) {
+					tableName = tableRs.getString("TABLE_NAME");
+					tableName = tableName.toUpperCase();
+					System.out.println("加载" + tableName + "表信息中。。。");
+					String beanName = null;
+					if (StringUtils.isEmpty(className)) {
+						beanName = StringUtils.underline2Camel(tableName, false);
 					} else {
-						fieldName = columnName;
+						beanName = className;
 					}
-					String dbType = columnRs.getString("TYPE_NAME");
-					String remarks = columnRs.getString("REMARKS");
-					String javaType = convert.dbType2JavaType(dbType);
-					ColumnItem columnItem = new ColumnItem(columnName, fieldName, dbType, javaType);
-					columnItem.setRemarks(remarks);
-					if (tableItem.getPrimaryKey() == null) {
-						tableItem.getColumnList().add(columnItem);
-					} else if (!columnItem.getColumnName()
-							.equalsIgnoreCase(tableItem.getPrimaryKey().getColumnName())) {
-						tableItem.getColumnList().add(columnItem);
-					}
-				}
-				DBManager.close(columnRs);
-				// 查询表中的主键
-				pkRs = dbmd.getPrimaryKeys(null, "%", tableName);
-				while (pkRs.next()) {
-					String pkName = pkRs.getString("COLUMN_NAME");
-					for (ColumnItem cItem : tableItem.getColumnList()) {
-						if (cItem.getColumnName().equalsIgnoreCase(pkName)) {
-							tableItem.getColumnList().remove(cItem);
-							tableItem.setPrimaryKey(cItem);
-							break;
+					TableItem tableItem = new TableItem(tableName, beanName, null, new ArrayList<ColumnItem>());
+
+					TABLES.add(tableItem);
+
+					// 查询表中的所有字段
+					try (ResultSet columnRs = dbmd.getColumns(null, "%", tableName, "%");) {
+						while (columnRs.next()) {
+							String columnName = columnRs.getString("COLUMN_NAME");
+							String fieldName = null;
+							if (Generator.CAMEL) {
+								fieldName = StringUtils.underline2Camel(columnName, true);
+							} else {
+								fieldName = columnName;
+							}
+							String dbType = columnRs.getString("TYPE_NAME");
+							String remarks = columnRs.getString("REMARKS");
+							String javaType = convert.dbType2JavaType(dbType);
+							ColumnItem columnItem = new ColumnItem(columnName, fieldName, dbType, javaType);
+							columnItem.setRemarks(remarks);
+							if (tableItem.getPrimaryKey() == null || !columnItem.getColumnName()
+									.equalsIgnoreCase(tableItem.getPrimaryKey().getColumnName())) {
+								tableItem.getColumnList().add(columnItem);
+							}
 						}
 					}
-				}
-				DBManager.close(pkRs);
-				if (tableItem.getPrimaryKey() == null) {
-					throw new RuntimeException("表" + tableName + "缺少主键");
+					// 查询表中的主键
+					try (ResultSet pkRs = dbmd.getPrimaryKeys(null, "%", tableName);) {
+						while (pkRs.next()) {
+							String pkName = pkRs.getString("COLUMN_NAME");
+							for (ColumnItem cItem : tableItem.getColumnList()) {
+								if (cItem.getColumnName().equalsIgnoreCase(pkName)) {
+									tableItem.getColumnList().remove(cItem);
+									tableItem.setPrimaryKey(cItem);
+									break;
+								}
+							}
+						}
+					}
+					if (tableItem.getPrimaryKey() == null) {
+						throw new RuntimeException("表" + tableName + "缺少主键");
+					}
 				}
 			}
 			System.out.println("所有表加载完成");
@@ -103,10 +99,6 @@ public class TableContext {
 			e.printStackTrace();
 			System.out.println("加载表信息失败");
 			throw e;
-		} finally {
-			DBManager.close(tableRs);
-			DBManager.close(pkRs);
-			DBManager.close(columnRs);
 		}
 
 	}

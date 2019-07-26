@@ -4,14 +4,20 @@
  */
 package com.fline.generator;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
 import com.fline.generator.bean.TableItem;
+import com.fline.generator.bean.TemplateItem;
 import com.fline.generator.core.JavaDaoManager;
 import com.fline.generator.core.JavaPoManager;
 import com.fline.generator.core.TableContext;
 import com.fline.generator.core.XmlManager;
 import com.fline.generator.typeconvertor.MySQLTypeConvertor;
 import com.fline.generator.typeconvertor.TypeConvertor;
-import com.fline.generator.util.JavaFileUtil;
 
 /**
  * @since 2017年12月6日 下午2:04:18
@@ -62,6 +68,7 @@ public class Generator {
 	 */
 	public static boolean CAMEL = false;
 
+	public static Properties properties;
 	/**
 	 * 所有表中必须有且仅有一个主键id,
 	 * <p>
@@ -74,13 +81,24 @@ public class Generator {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		// 要生成的表名，null或""表示生成所有表,
-		String tableName = "area";
-		// javabean名，必须在tableName不为空时使用
-		String BeanName = "Area";
+		TemplateItem t1 = new TemplateItem("dao.package", "dao.template");
+		TemplateItem t2 = new TemplateItem("service.package", "service.template");
+		List<TemplateItem> list = new ArrayList<>();
+		list.add(t1);
+		list.add(t2);
+		properties = new Properties();
+		InputStream resourceAsStream = Generator.class.getClassLoader()
+				.getResourceAsStream("GeneratorConfig.properties");
+		properties.load(resourceAsStream);
+		test(list);
+	}
 
-		Generator g = new Generator();
-		g.generate(tableName, BeanName);
+	public static void test(List<TemplateItem> list) throws IOException {
+
+		for (TemplateItem templateItem : list) {
+			String templatePackage = properties.getProperty(templateItem.getTemplatePackage());
+			System.out.println(templatePackage);
+		}
 
 	}
 
@@ -90,8 +108,7 @@ public class Generator {
 		// 加载表信息
 		TableContext.init(convertor, tableName, BeanName);
 		// 模板生成文件
-		JavaFileUtil.createPath();
-		for (TableItem item : TableContext.tables) {
+		for (TableItem item : TableContext.TABLES) {
 			// 文件生成
 			JavaDaoManager.createDaoFile(item);
 			JavaDaoManager.createDaoImplFile(item);

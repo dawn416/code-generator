@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<generator>
+    <templateList>
+        <template>
+            <templateFile>dao_template.xml</templateFile>
+            <templatePackage>src.main.java.com.fline.dao</templatePackage>
+        </template>
+        <template>
+            <templateFile>service_template.ftl</templateFile>
+            <templatePackage>src.main.java.com.fline.service</templatePackage>
+        </template>
+        <template>
+            <templateFile></templateFile>
+            <templatePackage></templatePackage>
+        </template>
+    </templateList>
+    <jdbcInfo>
+        <driver></driver>
+        <url></url>
+        <username></username>
+        <password></password>
+    </jdbcInfo>
+</generator>

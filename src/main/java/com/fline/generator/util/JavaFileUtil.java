@@ -20,33 +20,15 @@ import com.fline.generator.core.DBManager;
  */
 public class JavaFileUtil {
 	public static String modelPath;
-	public static String xmlPath;
-	public static String daoPath;
-	public static String daoImplPath;
 
 	/**
 	 * 根据包名创建目录
 	 */
-	public static void createPath() {
+	public static void createPath(String modeProject) {
 		modelPath = Generator.modeProject + "\\" + StringUtils.pathConvert(Generator.modelPackage);
-		xmlPath = Generator.modeProject + "\\" + StringUtils.pathConvert(Generator.xmlPackage);
-		daoPath = Generator.modeProject + "\\" + StringUtils.pathConvert(Generator.daoPackage);
-		daoImplPath = Generator.modeProject + "\\" + StringUtils.pathConvert(Generator.daoImplPackage);
 		File modelFile = new File(modelPath);
-		File xmlFile = new File(xmlPath);
-		File daoFile = new File(daoPath);
-		File daoImplFile = new File(daoImplPath);
 		if (!modelFile.exists()) {
 			modelFile.mkdirs();
-		}
-		if (!xmlFile.exists()) {
-			xmlFile.mkdirs();
-		}
-		if (!daoFile.exists()) {
-			daoFile.mkdirs();
-		}
-		if (!daoImplFile.exists()) {
-			daoImplFile.mkdirs();
 		}
 	}
 
