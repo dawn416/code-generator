@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <generator>
     <templateList>
-        <template>
+        <templateItem>
             <templateFile>dao_template.xml</templateFile>
             <templatePackage>src.main.java.com.fline.dao</templatePackage>
-        </template>
-        <template>
+        </templateItem>
+        <templateItem>
             <templateFile>service_template.ftl</templateFile>
             <templatePackage>src.main.java.com.fline.service</templatePackage>
-        </template>
-        <template>
-            <templateFile></templateFile>
-            <templatePackage></templatePackage>
-        </template>
+        </templateItem>
+        <templateItem>
+            <templateFile>controller_template.xml</templateFile>
+            <templatePackage>src.main.java.com.fline.controller</templatePackage>
+        </templateItem>
     </templateList>
     <jdbcInfo>
-        <driver></driver>
-        <url></url>
-        <username></username>
-        <password></password>
+        <driver>com.mysql.jdbc.Driver</driver>
+        <url>jdbc:mysql://127.0.0.1:3306/saizhi?useUnicode=true&amp;characterEncoding=UTF8</url>
+        <username>root</username>
+        <password>123456</password>
     </jdbcInfo>
 </generator>

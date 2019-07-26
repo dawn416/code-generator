@@ -6,10 +6,11 @@ package com.fline.generator;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.TimeZone;
 
+import com.fline.generator.bean.GeneratorConfig;
 import com.fline.generator.bean.TableItem;
 import com.fline.generator.bean.TemplateItem;
 import com.fline.generator.core.JavaDaoManager;
@@ -18,6 +19,10 @@ import com.fline.generator.core.TableContext;
 import com.fline.generator.core.XmlManager;
 import com.fline.generator.typeconvertor.MySQLTypeConvertor;
 import com.fline.generator.typeconvertor.TypeConvertor;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.basic.DateConverter;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
 
 /**
  * @since 2017年12月6日 下午2:04:18
@@ -80,17 +85,31 @@ public class Generator {
 	 * @param args
 	 * @throws Exception
 	 */
+	public static final XmlFriendlyNameCoder nameCoder = new XmlFriendlyNameCoder("-_", "_");
+	private static final String ENCODING = "UTF-8";
+	private static final DomDriver fixDriver = new DomDriver(ENCODING, nameCoder);
+	public static final XStream XSTREAM = new XStream(fixDriver);
+	private static final String CHINA_TIME_ZONE = "Asia/Shanghai";
+	static {
+		// 时区处理
+		TimeZone zone = TimeZone.getTimeZone(CHINA_TIME_ZONE); // 获得时区
+		XSTREAM.registerConverter(new DateConverter(zone), XStream.PRIORITY_NORMAL);
+		XSTREAM.autodetectAnnotations(true); // 开启序列化的注解形式
+		XSTREAM.setMode(XStream.NO_REFERENCES);// 取消引用,如果没有这一步,会出现xml引用格式reference
+
+	}
 	public static void main(String[] args) throws Exception {
-		TemplateItem t1 = new TemplateItem("dao.package", "dao.template");
-		TemplateItem t2 = new TemplateItem("service.package", "service.template");
-		List<TemplateItem> list = new ArrayList<>();
-		list.add(t1);
-		list.add(t2);
-		properties = new Properties();
+
 		InputStream resourceAsStream = Generator.class.getClassLoader()
-				.getResourceAsStream("GeneratorConfig.properties");
-		properties.load(resourceAsStream);
-		test(list);
+				.getResourceAsStream("NewFile.xml");
+		GeneratorConfig target = null;
+		XStream xstream = XSTREAM;
+		try {
+			target = (GeneratorConfig) xstream.fromXML(resourceAsStream, target);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public static void test(List<TemplateItem> list) throws IOException {
