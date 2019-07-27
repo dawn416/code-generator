@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <generator>
+	<jdbcInfo>
+        <driver>com.mysql.jdbc.Driver</driver>
+        <url>jdbc:mysql://127.0.0.1:3306/saizhi?useUnicode=true&amp;characterEncoding=UTF8&amp;useSSL=false</url>
+        <username>root</username>
+        <password>123456</password>
+        <table>big_match</table>
+        <entity>BigMatch</entity>
+        <camel>true</camel>
+    </jdbcInfo>
+    <typeConvertList>
+    	<typeConvert java="String" jdbc="varchar"/>
+    	<typeConvert java="String" jdbc="char"/>
+    	<typeConvert java="String" jdbc="text"/>
+    	<typeConvert java="Integer" jdbc="int"/>
+    </typeConvertList>
     <templateList>
         <templateItem>
             <templateFile>dao_template.xml</templateFile>
             <templatePackage>src.main.java.com.fline.dao</templatePackage>
+            <fileName>${entity}Mapper.xml</fileName>
         </templateItem>
         <templateItem>
             <templateFile>service_template.ftl</templateFile>
             <templatePackage>src.main.java.com.fline.service</templatePackage>
+            <fileName>${entity}Service.java</fileName>
         </templateItem>
         <templateItem>
             <templateFile>controller_template.xml</templateFile>
             <templatePackage>src.main.java.com.fline.controller</templatePackage>
+            <fileName>${entity}Controller.java</fileName>
         </templateItem>
     </templateList>
-    <jdbcInfo>
-        <driver>com.mysql.jdbc.Driver</driver>
-        <url>jdbc:mysql://127.0.0.1:3306/saizhi?useUnicode=true&amp;characterEncoding=UTF8</url>
-        <username>root</username>
-        <password>123456</password>
-    </jdbcInfo>
 </generator>
