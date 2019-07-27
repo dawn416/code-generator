@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT generator (jdbcInfo, typeConvertList, templateList)>
+
+<!ELEMENT jdbcInfo (driver+, url+, username+, password+, table+, entity+, camel+)>
+<!ELEMENT driver (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT username (#PCDATA)>
+<!ELEMENT password (#PCDATA)>
+<!ELEMENT table (#PCDATA)>
+<!ELEMENT entity (#PCDATA)>
+<!ELEMENT camel (#PCDATA)>
+
+<!ELEMENT typeConvertList (typeConvert+)>
+<!ATTLIST typeConvert
+jdbc CDATA #REQUIRED
+java CDATA #REQUIRED
+>
+
+<!ELEMENT templateList (templateItem+)>
+<!ELEMENT templateItem (templateFile, templatePackage, fileName)>
+<!ELEMENT templateFile (#PCDATA)>
+<!ELEMENT templatePackage (#PCDATA)>
+<!ELEMENT fileName (#PCDATA)>

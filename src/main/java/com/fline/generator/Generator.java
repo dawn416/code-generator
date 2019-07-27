@@ -5,6 +5,7 @@
 package com.fline.generator;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fline.generator.bean.GeneratorConfig;
@@ -38,7 +39,15 @@ public class Generator {
     public static Map<String, Object> customParams;
 
     public static void main(String[] args) throws Exception {
-        InputStream resourceAsStream = Generator.class.getClassLoader().getResourceAsStream("NewFile.xml");
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("key", "value");
+        Generator.generate("test/NewFile.xml", map);
+    }
+
+    public static void generate(String configFile, Map<String, Object> param) throws Exception {
+        customParams = param;
+        InputStream resourceAsStream = Generator.class.getClassLoader().getResourceAsStream(configFile);
         XStream xstream = new XStream();
         xstream.autodetectAnnotations(true);
         xstream.alias("generator", GeneratorConfig.class);
@@ -61,41 +70,15 @@ public class Generator {
                             .replace($_TABLE, item.getTableName());
                     String path = StringUtil.pathConvert(templatePackage);
                     JavaFileUtil.createPath(path);
-                    TemplateManager.createXml(item, templateFile, path, fileName);
+                    Map<String, Object> dataMap = new HashMap<>();
+                    dataMap.put("tableItem", item);
+                    dataMap.put("fileName", fileName);
+                    dataMap.put("templatePackage", templatePackage);
+                    TemplateManager.createXml(templateFile, path, fileName, dataMap);
                 } catch (GenerateException e) {
                     e.printStackTrace();
                 }
             }
-        }
-    }
-
-    public static void create(String tableName, String beanName) throws Exception {
-        TableContext.loadTable();
-
-        for (TableItem item : TableContext.TABLES) {
-            for (TemplateItem templateItem : generatorConfig.getTemplateList()) {
-                String templatePackage = templateItem.getTemplatePackage().replaceAll($_ENTITY, item.getBeanName())
-                        .replaceAll($_TABLE, item.getTableName());
-                String fileName = templateItem.getFileName().replaceAll($_ENTITY, item.getBeanName())
-                        .replaceAll($_TABLE, item.getTableName());
-                String templateFile = templateItem.getTemplateFile().replaceAll($_ENTITY, item.getBeanName())
-                        .replaceAll($_TABLE, item.getTableName());
-                String path = StringUtil.pathConvert(templatePackage);
-                JavaFileUtil.createPath(path);
-                TemplateManager.createXml(item, templateFile, path, fileName);
-            }
-        }
-    }
-
-    public void generate(String tableName, String BeanName) throws Exception {
-
-        // 加载数据库配置
-        // 加载表信息
-        TableContext.loadTable();
-        // 模板生成文件
-        for (TableItem item : TableContext.TABLES) {
-            // 文件生成
-            System.out.println(item);
         }
     }
 

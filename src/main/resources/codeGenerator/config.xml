@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generator SYSTEM "NewFile.dtd" >
 <generator>
 	<jdbcInfo>
         <driver>com.mysql.jdbc.Driver</driver>
         <url>jdbc:mysql://127.0.0.1:3306/saizhi?useUnicode=true&amp;characterEncoding=UTF8&amp;useSSL=false</url>
         <username>root</username>
         <password>123456</password>
-        <table>%</table>
+        <table>big_match</table>
         <entity></entity>
         <camel>false</camel>
     </jdbcInfo>
@@ -29,17 +30,17 @@
     </typeConvertList>
     <templateList>
         <templateItem>
-            <templateFile>mysql_template.xml</templateFile>
+            <templateFile>test/mysql_template.xml</templateFile>
             <templatePackage>src.main.java.com.fline.dao</templatePackage>
             <fileName>${entity}Mapper.xml</fileName>
         </templateItem>
         <templateItem>
-            <templateFile>service_template.java</templateFile>
+            <templateFile>test/service_template.java</templateFile>
             <templatePackage>src.main.java.com.fline.service</templatePackage>
             <fileName>${entity}Service.java</fileName>
         </templateItem>
         <templateItem>
-            <templateFile>controller_template.java</templateFile>
+            <templateFile>test/controller_template.java</templateFile>
             <templatePackage>src.main.java.com.fline.controller</templatePackage>
             <fileName>${entity}Controller.java</fileName>
         </templateItem>
