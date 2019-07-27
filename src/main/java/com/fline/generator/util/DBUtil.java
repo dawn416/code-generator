@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.fline.generator.GenerateException;
 import com.fline.generator.Generator;
 
 /**
@@ -30,9 +31,7 @@ public class DBUtil {
             Class.forName(driver);
             return DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("获取数据库连接失败");
-            throw e;
+            throw new GenerateException("获取数据库连接失败", e);
         }
     }
 

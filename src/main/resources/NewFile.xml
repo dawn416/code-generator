@@ -5,29 +5,41 @@
         <url>jdbc:mysql://127.0.0.1:3306/saizhi?useUnicode=true&amp;characterEncoding=UTF8&amp;useSSL=false</url>
         <username>root</username>
         <password>123456</password>
-        <table>big_match</table>
-        <entity>BigMatch</entity>
-        <camel>true</camel>
+        <table>%</table>
+        <entity></entity>
+        <camel>false</camel>
     </jdbcInfo>
     <typeConvertList>
-    	<typeConvert java="String" jdbc="varchar"/>
-    	<typeConvert java="String" jdbc="char"/>
-    	<typeConvert java="String" jdbc="text"/>
-    	<typeConvert java="Integer" jdbc="int"/>
+    	<typeConvert java="String" jdbc="VARCHAR"/>
+    	<typeConvert java="String" jdbc="CHAR"/>
+    	<typeConvert java="String" jdbc="TEXT"/>
+    	<typeConvert java="Integer" jdbc="INT"/>
+    	<typeConvert java="Integer" jdbc="TINYINT"/>
+    	<typeConvert java="Integer" jdbc="SMALLINT"/>
+    	<typeConvert java="Integer" jdbc="TINYINT"/>
+    	<typeConvert java="Integer" jdbc="INTEGER"/>
+    	<typeConvert java="Long" jdbc="BIGINT"/>
+    	<typeConvert java="Double" jdbc="DOUBLE"/>
+    	<typeConvert java="Double" jdbc="FLOAT"/>
+    	<typeConvert java="Date" jdbc="DATE"/>
+    	<typeConvert java="Date" jdbc="DATETIME"/>
+    	<typeConvert java="Date" jdbc="TIME"/>
+    	<typeConvert java="Date" jdbc="TIMESTAMP"/>
+    	<typeConvert java="Decimal" jdbc="DECIMAL"/>
     </typeConvertList>
     <templateList>
         <templateItem>
-            <templateFile>dao_template.xml</templateFile>
+            <templateFile>mysql_template.xml</templateFile>
             <templatePackage>src.main.java.com.fline.dao</templatePackage>
             <fileName>${entity}Mapper.xml</fileName>
         </templateItem>
         <templateItem>
-            <templateFile>service_template.ftl</templateFile>
+            <templateFile>service_template.java</templateFile>
             <templatePackage>src.main.java.com.fline.service</templatePackage>
             <fileName>${entity}Service.java</fileName>
         </templateItem>
         <templateItem>
-            <templateFile>controller_template.xml</templateFile>
+            <templateFile>controller_template.java</templateFile>
             <templatePackage>src.main.java.com.fline.controller</templatePackage>
             <fileName>${entity}Controller.java</fileName>
         </templateItem>

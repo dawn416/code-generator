@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.fline.generator.GenerateException;
+
 /**
  * @since 2017年12月7日 上午11:48:58
  * @version 1.0.0
@@ -32,12 +34,15 @@ public class JavaFileUtil {
      * 
      * @param path
      * @param content
+     * @throws IOException
      */
-    public static void createJavaFile(String path, String content) {
+    public static void createJavaFile(String path, String content) throws IOException {
+        File file = new File(path);
+        if (file.exists()) {
+            throw new GenerateException("文件已存在");
+        }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path));) {
             bw.write(content);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

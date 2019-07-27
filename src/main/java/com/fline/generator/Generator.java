@@ -44,20 +44,29 @@ public class Generator {
         xstream.alias("generator", GeneratorConfig.class);
         generatorConfig = (GeneratorConfig) xstream.fromXML(resourceAsStream);
         System.out.println(generatorConfig);
-
-        TableContext.loadTable();
-        System.out.println(TableContext.TABLES);
-    }
-
-    /**
-     * 
-     * @since 2019年7月27日 上午10:04:48
-     */
-    private void init() {
         for (TypeConvert typeconcert : generatorConfig.getTypeConvertList()) {
             CommonConvertor.map.put(typeconcert.getJdbc(), typeconcert.getJava());
         }
+        TableContext.loadTable();
 
+        for (TableItem item : TableContext.TABLES) {
+            System.out.println(item);
+            for (TemplateItem templateItem : generatorConfig.getTemplateList()) {
+                try {
+                    String templatePackage = templateItem.getTemplatePackage().replace($_ENTITY, item.getBeanName())
+                            .replace($_TABLE, item.getTableName());
+                    String fileName = templateItem.getFileName().replace($_ENTITY, item.getBeanName()).replace($_TABLE,
+                            item.getTableName());
+                    String templateFile = templateItem.getTemplateFile().replace($_ENTITY, item.getBeanName())
+                            .replace($_TABLE, item.getTableName());
+                    String path = StringUtil.pathConvert(templatePackage);
+                    JavaFileUtil.createPath(path);
+                    TemplateManager.createXml(item, templateFile, path, fileName);
+                } catch (GenerateException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public static void create(String tableName, String beanName) throws Exception {
@@ -73,7 +82,7 @@ public class Generator {
                         .replaceAll($_TABLE, item.getTableName());
                 String path = StringUtil.pathConvert(templatePackage);
                 JavaFileUtil.createPath(path);
-                TemplateManager.createXml(item, templateFile, fileName);
+                TemplateManager.createXml(item, templateFile, path, fileName);
             }
         }
     }

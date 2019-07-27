@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.fline.generator.GenerateException;
 import com.fline.generator.Generator;
 import com.fline.generator.bean.ColumnItem;
 import com.fline.generator.bean.TableItem;
@@ -45,11 +46,9 @@ public class TableContext {
                     loadTableDetail(entityName, dbmd, tableRs);
                 }
             }
-            System.out.println("所有表加载完成");
+            System.out.println("所有表信息加载完成");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("加载表信息失败");
-            throw e;
+            throw new GenerateException("加载表信息失败", e);
         }
 
     }
@@ -79,7 +78,7 @@ public class TableContext {
             loadPrimaryKeys(tableItem, pkRs);
         }
         if (tableItem.getPrimaryKey() == null) {
-            throw new RuntimeException("表" + tableName + "缺少主键");
+            throw new GenerateException("表" + tableName + "缺少主键");
         }
     }
 

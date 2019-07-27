@@ -61,7 +61,7 @@ public class StringUtil {
     }
 
     public static String pathConvert(String path) {
-        return path.replaceAll("\\.", File.separator);
+        return path.replace(".", File.separator);
     }
 
     public static String capitalize(final String str) {

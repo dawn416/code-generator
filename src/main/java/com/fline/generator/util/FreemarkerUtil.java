@@ -16,7 +16,8 @@ import freemarker.template.TemplateException;
 
 public class FreemarkerUtil {
 
-    public static String createFile(String templatePath, String templateName, Map<String, Object> dataMap) {
+    public static String createFile(String templatePath, String templateName, Map<String, Object> dataMap)
+            throws IOException, TemplateException {
         String result = "";
         // 得FreeMarker配置对象
         // 创建Configuration对象
@@ -34,8 +35,6 @@ public class FreemarkerUtil {
             // 生成xml
             template.process(dataMap, w);
             result = w.toString();
-        } catch (TemplateException | IOException e) {
-            e.printStackTrace();
         }
         return result;
     }
