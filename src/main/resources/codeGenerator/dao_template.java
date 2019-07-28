@@ -1,6 +1,6 @@
 ﻿package ${templateItem.targetPackage};
 
-public interface ${tableItem.beanName}Controller {
+public interface ${tableItem.beanName}Mapper {
 
 
 

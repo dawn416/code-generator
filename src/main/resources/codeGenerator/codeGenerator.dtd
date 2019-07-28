@@ -18,7 +18,8 @@ java CDATA #REQUIRED
 >
 
 <!ELEMENT templateList (templateItem+)>
-<!ELEMENT templateItem (templateFile, targetPackage, targetFileName)>
+<!ELEMENT templateItem (templateFile, targetPackage, targetFileName, targetProject)>
 <!ELEMENT templateFile (#PCDATA)>
 <!ELEMENT targetPackage (#PCDATA)>
 <!ELEMENT targetFileName (#PCDATA)>
+<!ELEMENT targetProject (#PCDATA)>

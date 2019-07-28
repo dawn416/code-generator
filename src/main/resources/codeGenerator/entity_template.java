@@ -8,7 +8,9 @@ import java.io.Serializable;
 </#list>
 <#if utildate??>import java.util.Date;</#if>
 <#if bigdecimal??>import java.math.BigDecimal;</#if>
+import lombok.Data;
 
+@Data
 public class ${tableItem.beanName} implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,6 +33,7 @@ public class ${tableItem.beanName} implements Serializable {
 </#list>
 
 <#-- getter and setter method -->
+<#-- 
 <#list tableItem.columnList as pk>
     <#assign exist=false>
     <#if customItem??>
@@ -49,4 +52,5 @@ public class ${tableItem.beanName} implements Serializable {
     }
     </#if>
 </#list>
+-->
 }

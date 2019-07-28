@@ -31,9 +31,15 @@
     <templateList>
         <templateItem>
             <templateFile>codeGenerator/mysql_template.xml</templateFile>
-            <targetProject>src.main.resources</targetProject>
+            <targetProject>src.main.java</targetProject>
             <targetPackage>com.fline.dao</targetPackage>
             <targetFileName>${entity}Mapper.xml</targetFileName>
+        </templateItem>
+        <templateItem>
+            <templateFile>codeGenerator/dao_template.java</templateFile>
+            <targetProject>src.main.java</targetProject>
+            <targetPackage>com.fline.dao</targetPackage>
+            <targetFileName>${entity}Mapper.java</targetFileName>
         </templateItem>
         <templateItem>
             <templateFile>codeGenerator/service_template.java</templateFile>
@@ -52,6 +58,12 @@
         	<targetProject>src.main.java</targetProject>
             <targetPackage>com.fline.entity</targetPackage>
             <targetFileName>${entity}.java</targetFileName>
+        </templateItem>
+        <templateItem>
+        	<templateFile>codeGenerator/serviceImpl_template.java</templateFile>
+        	<targetProject>src.main.java</targetProject>
+            <targetPackage>com.fline.service.impl</targetPackage>
+            <targetFileName>${entity}ServiceImpl.java</targetFileName>
         </templateItem>
     </templateList>
 </generator>
