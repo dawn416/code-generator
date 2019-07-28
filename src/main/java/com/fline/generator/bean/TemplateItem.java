@@ -8,40 +8,39 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @XStreamAlias("templateItem")
 public class TemplateItem {
-    private String templatePackage;
+    private String targetPackage;
     private String templateFile;
-    private String fileName;
+    private String targetFileName;
+    private String targetProject;
 
     @Override
     public String toString() {
-        return "TemplateItem [templatePackage=" + templatePackage + ", templateFile=" + templateFile + ", fileName="
-                + fileName + "]";
+        return "TemplateItem [targetPackage=" + targetPackage + ", templateFile=" + templateFile + ", targetFileName="
+                + targetFileName + ", targetProject=" + targetProject + "]";
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getTargetProject() {
+        return targetProject;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setTargetProject(String targetProject) {
+        this.targetProject = targetProject;
     }
 
-    /**
-     * @param templatePackage
-     * @param templateFile
-     */
-    public TemplateItem(String templatePackage, String templateFile) {
-        super();
-        this.templatePackage = templatePackage;
-        this.templateFile = templateFile;
+    public String getTargetFileName() {
+        return targetFileName;
     }
 
-    public String getTemplatePackage() {
-        return templatePackage;
+    public void setTargetFileName(String targetFileName) {
+        this.targetFileName = targetFileName;
     }
 
-    public void setTemplatePackage(String templatePackage) {
-        this.templatePackage = templatePackage;
+    public String getTargetPackage() {
+        return targetPackage;
+    }
+
+    public void setTargetPackage(String targetPackage) {
+        this.targetPackage = targetPackage;
     }
 
     public String getTemplateFile() {

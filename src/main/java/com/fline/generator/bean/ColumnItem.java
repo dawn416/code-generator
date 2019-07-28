@@ -16,6 +16,7 @@ public class ColumnItem {
     private String jdbcType;
     private String javaType;
     private String remarks;
+    private boolean id;
 
     /**
      * @param columnName
@@ -34,7 +35,15 @@ public class ColumnItem {
     @Override
     public String toString() {
         return "ColumnItem [columnName=" + columnName + ", fieldName=" + fieldName + ", jdbcType=" + jdbcType
-                + ", javaType=" + javaType + ", remarks=" + remarks + "]";
+                + ", javaType=" + javaType + ", remarks=" + remarks + ", id=" + id + "]";
+    }
+
+    public boolean isId() {
+        return id;
+    }
+
+    public void setId(boolean id) {
+        this.id = id;
     }
 
     /**

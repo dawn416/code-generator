@@ -1,7 +1,7 @@
 
 # 通用JDBC代码生成器
 
-通过自定义freemarker模板生成代码
+通过自定义freemarker模板生成代码,支持传入自定义参数
 
 ```xml
 <generator>
@@ -22,7 +22,7 @@
 		<camel>false</camel>
 	</jdbcInfo>
 	<typeConvertList>
-		<!-- jdbc转换为java类型对应 -->
+		<!-- 指定jdbc转换为java类型的对应关系 -->
 		<typeConvert java="String" jdbc="VARCHAR"/>
 		<typeConvert java="String" jdbc="CHAR"/>
 		<typeConvert java="String" jdbc="TEXT"/>
@@ -41,22 +41,25 @@
 		<typeConvert java="Decimal" jdbc="DECIMAL"/>
 	</typeConvertList>
 	<templateList>
-		<templateItem>
-			<!-- jdbc转换为java类型对应 -->
-			<templateFile>test/mysql_template.xml</templateFile>
-			<templatePackage>src.main.java.com.fline.dao</templatePackage>
-			<fileName>${entity}Mapper.xml</fileName>
-		</templateItem>
-		<templateItem>
-			<templateFile>test/service_template.java</templateFile>
-			<templatePackage>src.main.java.com.fline.service</templatePackage>
-			<fileName>${entity}Service.java</fileName>
-		</templateItem>
-		<templateItem>
-			<templateFile>test/controller_template.java</templateFile>
-			<templatePackage>src.main.java.com.fline.controller</templatePackage>
-			<fileName>${entity}Controller.java</fileName>
-		</templateItem>
-	</templateList>
+		<!-- 模板参数,可指定多个 -->
+        <templateItem>
+        	<!-- 模板文件路径 -->
+            <templateFile>codeGenerator/mysql_template.xml</templateFile>
+            <!-- 生成的文件路径 -->
+            <targetPackage>src.main.java.com.fline.dao.${table}</targetPackage>
+            <!-- 生成的文件名 -->
+            <targetFileName>${entity}Mapper.xml</targetFileName>
+        </templateItem>
+        <templateItem>
+            <templateFile>codeGenerator/service_template.java</templateFile>
+            <targetPackage>src.main.java.com.fline.service.${table}</targetPackage>
+            <targetFileName>${entity}Service.java</targetFileName>
+        </templateItem>
+        <templateItem>
+            <templateFile>codeGenerator/controller_template.java</templateFile>
+            <targetPackage>src.main.java.com.fline.controller.${table}</targetPackage>
+            <targetFileName>${entity}Controller.java</targetFileName>
+        </templateItem>
+    </templateList>
 </generator>
 ```
