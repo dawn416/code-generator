@@ -1,7 +1,3 @@
-/**
- * Copyright(C) 2017 Zhejiang Fline Technology Co., Ltd. All rights reserved.
- *
- */
 package com.fline.generator.util;
 
 import java.io.BufferedWriter;

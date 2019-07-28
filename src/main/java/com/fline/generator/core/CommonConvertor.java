@@ -1,7 +1,3 @@
-/**
- * Copyright(C) 2019 Zhejiang Fline Technology Co., Ltd. All rights reserved.
- *
- */
 package com.fline.generator.core;
 
 import java.util.HashMap;
