@@ -65,8 +65,7 @@ public class TableContext {
             beanName = entityName;
         }
         String uncapitalize = StringUtil.uncapitalize(beanName);
-        TableItem tableItem = new TableItem(beanName, tableName, new ArrayList<ColumnItem>(),
-                new ArrayList<ColumnItem>(), remarks, uncapitalize);
+        TableItem tableItem = new TableItem(beanName, tableName, new ArrayList<ColumnItem>(), remarks, uncapitalize);
 
         TABLES.add(tableItem);
         // 查询表中的所有字段
@@ -75,10 +74,9 @@ public class TableContext {
         }
         // 查询表中的主键
         try (ResultSet pkRs = dbmd.getPrimaryKeys(null, "%", tableName);) {
-            loadPrimaryKeys(tableItem, pkRs);
-        }
-        if (tableItem.getPrimaryKey() == null) {
-            throw new GenerateException("表" + tableName + "缺少主键");
+            if (loadPrimaryKeys(tableItem, pkRs)) {
+                throw new GenerateException("表" + tableName + "缺少主键");
+            }
         }
     }
 
@@ -100,17 +98,19 @@ public class TableContext {
         }
     }
 
-    private static void loadPrimaryKeys(TableItem tableItem, ResultSet pkRs) throws SQLException {
+    private static boolean loadPrimaryKeys(TableItem tableItem, ResultSet pkRs) throws SQLException {
+        boolean noId = true;
         while (pkRs.next()) {
             String pkName = pkRs.getString("COLUMN_NAME");
             for (Iterator iterator = tableItem.getColumnList().iterator(); iterator.hasNext();) {
                 ColumnItem cItem = (ColumnItem) iterator.next();
-                if (cItem.getColumnName().equalsIgnoreCase(pkName)) {
-                    iterator.remove();
-                    tableItem.getPrimaryKey().add(cItem);
+                if (cItem.getColumnName().equals(pkName)) {
+                    cItem.setId(true);
+                    noId = false;
                 }
             }
         }
+        return noId;
     }
 
     private TableContext() {

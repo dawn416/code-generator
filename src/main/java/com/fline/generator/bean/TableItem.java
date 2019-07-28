@@ -10,7 +10,6 @@ import java.util.List;
 public class TableItem {
     private String beanName;
     private String tableName;
-    private List<ColumnItem> primaryKey;
     private List<ColumnItem> columnList;
     private String remark;
     private String alias;
@@ -23,12 +22,17 @@ public class TableItem {
      * @param remark
      * @param alias
      */
-    public TableItem(String beanName, String tableName, List<ColumnItem> primaryKey, List<ColumnItem> columnList) {
+    public TableItem(String beanName, String tableName, List<ColumnItem> columnList) {
         super();
         this.beanName = beanName;
         this.tableName = tableName;
-        this.primaryKey = primaryKey;
         this.columnList = columnList;
+    }
+
+    @Override
+    public String toString() {
+        return "TableItem [beanName=" + beanName + ", tableName=" + tableName + ", columnList=" + columnList
+                + ", remark=" + remark + ", alias=" + alias + "]";
     }
 
     /**
@@ -39,32 +43,16 @@ public class TableItem {
      * @param remark
      * @param alias
      */
-    public TableItem(String beanName, String tableName, List<ColumnItem> primaryKey, List<ColumnItem> columnList,
-            String remark, String alias) {
+    public TableItem(String beanName, String tableName, List<ColumnItem> columnList, String remark, String alias) {
         super();
         this.beanName = beanName;
         this.tableName = tableName;
-        this.primaryKey = primaryKey;
         this.columnList = columnList;
         this.remark = remark;
         this.alias = alias;
     }
 
-    @Override
-    public String toString() {
-        return "TableItem [beanName=" + beanName + ", tableName=" + tableName + ", primaryKey=" + primaryKey
-                + ", columnList=" + columnList + ", remark=" + remark + ", alias=" + alias + "]";
-    }
-
     public TableItem() {
-    }
-
-    public List<ColumnItem> getPrimaryKey() {
-        return primaryKey;
-    }
-
-    public void setPrimaryKey(List<ColumnItem> primaryKey) {
-        this.primaryKey = primaryKey;
     }
 
     public String getBeanName() {

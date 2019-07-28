@@ -1,7 +1,7 @@
 
 # 通用JDBC代码生成器
 
-通过自定义freemarker模板生成代码,支持传入自定义参数
+通过自定义freemarker模板生成代码,支持自定义参数
 
 ```xml
 <generator>
@@ -41,23 +41,27 @@
 		<typeConvert java="Decimal" jdbc="DECIMAL"/>
 	</typeConvertList>
 	<templateList>
-		<!-- 模板参数,可指定多个 -->
+		<!-- 模板参数,可指定多个,${entity}、${table}参数可以使用 -->
         <templateItem>
         	<!-- 模板文件路径 -->
             <templateFile>codeGenerator/mysql_template.xml</templateFile>
-            <!-- 生成的文件路径 -->
+			<!-- 文件的生成项目 -->
+			<targetProject>src.main.java</targetProject>
+            <!-- 文件的生成路径 -->
             <targetPackage>src.main.java.com.fline.dao.${table}</targetPackage>
             <!-- 生成的文件名 -->
             <targetFileName>${entity}Mapper.xml</targetFileName>
         </templateItem>
         <templateItem>
             <templateFile>codeGenerator/service_template.java</templateFile>
+			<targetProject>src.main.java</targetProject>
             <targetPackage>src.main.java.com.fline.service.${table}</targetPackage>
             <targetFileName>${entity}Service.java</targetFileName>
         </templateItem>
         <templateItem>
             <templateFile>codeGenerator/controller_template.java</templateFile>
-            <targetPackage>src.main.java.com.fline.controller.${table}</targetPackage>
+			<targetProject>src.main.java</targetProject>
+            <targetPackage>com.fline.controller.${table}</targetPackage>
             <targetFileName>${entity}Controller.java</targetFileName>
         </templateItem>
     </templateList>

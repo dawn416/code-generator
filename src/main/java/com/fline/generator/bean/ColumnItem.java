@@ -30,6 +30,7 @@ public class ColumnItem {
         this.fieldName = fieldName;
         this.jdbcType = jdbcType;
         this.javaType = javaType;
+        this.id = false;
     }
 
     @Override

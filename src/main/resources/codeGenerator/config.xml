@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE generator SYSTEM "NewFile.dtd" >
+<!DOCTYPE generator SYSTEM "codeGenerator.dtd" >
 <generator>
 	<jdbcInfo>
         <driver>com.mysql.jdbc.Driver</driver>
@@ -32,19 +32,19 @@
         <templateItem>
             <templateFile>codeGenerator/mysql_template.xml</templateFile>
             <targetProject>src.main.resources</targetProject>
-            <targetPackage>com.fline.dao.${table}</targetPackage>
+            <targetPackage>com.fline.dao</targetPackage>
             <targetFileName>${entity}Mapper.xml</targetFileName>
         </templateItem>
         <templateItem>
             <templateFile>codeGenerator/service_template.java</templateFile>
             <targetProject>src.main.java</targetProject>
-            <targetPackage>com.fline.service.${table}</targetPackage>
+            <targetPackage>com.fline.service</targetPackage>
             <targetFileName>${entity}Service.java</targetFileName>
         </templateItem>
         <templateItem>
         	<templateFile>codeGenerator/controller_template.java</templateFile>
         	<targetProject>src.main.java</targetProject>
-            <targetPackage>com.fline.controller.${table}</targetPackage>
+            <targetPackage>com.fline.controller</targetPackage>
             <targetFileName>${entity}Controller.java</targetFileName>
         </templateItem>
         <templateItem>
