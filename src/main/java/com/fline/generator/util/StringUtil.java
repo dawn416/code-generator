@@ -60,10 +60,24 @@ public class StringUtil {
         return sb.toString();
     }
 
+    /**
+     * 包名转化为路径名
+     * 
+     * @since 2019年7月29日 下午7:32:12
+     * @param path
+     * @return
+     */
     public static String pathConvert(String path) {
         return path.replace(".", File.separator);
     }
 
+    /**
+     * 首字母大写
+     * 
+     * @since 2019年7月29日 下午7:32:31
+     * @param str
+     * @return
+     */
     public static String capitalize(final String str) {
         int strLen;
         if ((str == null) || ((strLen = str.length()) == 0)) {
@@ -79,6 +93,13 @@ public class StringUtil {
         return new StringBuilder(strLen).append(Character.toTitleCase(firstChar)).append(str.substring(1)).toString();
     }
 
+    /**
+     * 首字母小写
+     * 
+     * @since 2019年7月29日 下午7:32:49
+     * @param str
+     * @return
+     */
     public static String uncapitalize(String str) {
         int strLen;
         if ((str == null) || ((strLen = str.length()) == 0)) {

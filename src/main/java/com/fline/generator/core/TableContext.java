@@ -117,8 +117,8 @@ public class TableContext {
         boolean noId = true;
         while (pkRs.next()) {
             String pkName = pkRs.getString("COLUMN_NAME");
-            for (Iterator iterator = tableItem.getColumnList().iterator(); iterator.hasNext();) {
-                ColumnItem cItem = (ColumnItem) iterator.next();
+            for (Iterator<ColumnItem> iterator = tableItem.getColumnList().iterator(); iterator.hasNext();) {
+                ColumnItem cItem = iterator.next();
                 if (cItem.getColumnName().equals(pkName)) {
                     cItem.setId(true);
                     noId = false;
