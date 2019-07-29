@@ -88,7 +88,7 @@ public class StringUtil {
                 .toString();
     }
 
-    public static boolean isEmpty(String str) {
+    public static boolean hasText(String str) {
         return (str == null) || "".equals(str.trim());
     }
 

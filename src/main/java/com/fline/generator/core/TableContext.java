@@ -35,6 +35,9 @@ public class TableContext {
      * @param entityName 指定javabean名称，必须在有表名的前提下
      * @throws Exception
      */
+    static String catalog = null;
+    static String scheme = "%";
+
     public static void loadTable() {
         String tableName = Generator.generatorConfig.getJdbcInfo().getTable();
         String entityName = Generator.generatorConfig.getJdbcInfo().getEntity();
@@ -42,10 +45,18 @@ public class TableContext {
             // DatabaseMetaData 封装了数据库的源信息
             DatabaseMetaData dbmd = conn.getMetaData();
             String tablePattern = "%";
-            if (!StringUtil.isEmpty(tableName)) {
+            if (!StringUtil.hasText(tableName)) {
                 tablePattern = tableName;
             }
-            try (ResultSet tableRs = dbmd.getTables(null, null, tablePattern, new String[] { "TABLE" });) {
+
+            if (!StringUtil.hasText(Generator.generatorConfig.getJdbcInfo().getCatalog())) {
+                catalog = Generator.generatorConfig.getJdbcInfo().getCatalog();
+            }
+            if (!StringUtil.hasText(Generator.generatorConfig.getJdbcInfo().getScheme())) {
+                scheme = Generator.generatorConfig.getJdbcInfo().getScheme();
+            }
+
+            try (ResultSet tableRs = dbmd.getTables(catalog, scheme, tablePattern, new String[] { "TABLE" });) {
                 while (tableRs.next()) {
                     loadTableDetail(entityName, dbmd, tableRs);
                 }
@@ -63,7 +74,7 @@ public class TableContext {
         String remarks = tableRs.getString("REMARKS");
         LOG.debug("加载{}表信息中。。。", tableName);
         String beanName = null;
-        if (StringUtil.isEmpty(entityName)) {
+        if (StringUtil.hasText(entityName)) {
             beanName = StringUtil.underline2Camel(tableName, false);
         } else {
             beanName = entityName;
@@ -73,11 +84,11 @@ public class TableContext {
 
         TABLES.add(tableItem);
         // 查询表中的所有字段
-        try (ResultSet columnRs = dbmd.getColumns(null, "%", tableName, "%");) {
+        try (ResultSet columnRs = dbmd.getColumns(catalog, scheme, tableName, "%");) {
             loadColumns(tableItem, columnRs);
         }
         // 查询表中的主键
-        try (ResultSet pkRs = dbmd.getPrimaryKeys(null, "%", tableName);) {
+        try (ResultSet pkRs = dbmd.getPrimaryKeys(catalog, scheme, tableName);) {
             if (loadPrimaryKeys(tableItem, pkRs)) {
                 throw new GenerateException("表" + tableName + "缺少主键");
             }

@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.fline.generator.GenerateException;
+import com.fline.generator.CatchGenerateException;
 
 /**
  * @since 2017年12月7日 上午11:48:58
@@ -35,7 +35,7 @@ public class JavaFileUtil {
     public static void createJavaFile(String path, String content) throws IOException {
         File file = new File(path);
         if (file.exists()) {
-            throw new GenerateException("文件已存在");
+            throw new CatchGenerateException("文件已存在" + path);
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path));) {
             bw.write(content);

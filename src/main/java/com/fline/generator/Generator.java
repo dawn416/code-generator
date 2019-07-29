@@ -90,12 +90,11 @@ public class Generator {
                         .pathConvert(templateItem.getTargetProject() + "." + templateItem.getTargetPackage());
                 JavaFileUtil.createPath(path);
                 dataMap.put("tableItem", item);
-                LOG.debug("{}", dataMap);
+                LOG.debug("{}", item);
                 TemplateManager.createXml(templateItem.getTemplateFile(), path, templateItem.getTargetFileName(),
                         dataMap);
-            } catch (GenerateException e) {
-                LOG.error("", e);
-
+            } catch (CatchGenerateException e) {
+                LOG.error(e.getMessage());
             }
         }
     }

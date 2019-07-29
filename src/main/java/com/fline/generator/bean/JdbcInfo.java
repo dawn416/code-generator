@@ -12,6 +12,8 @@ public class JdbcInfo {
     private String url;
     private String username;
     private String password;
+    private String catalog;
+    private String scheme;
     private String table;
     private String entity;
     private boolean camel;
@@ -19,7 +21,24 @@ public class JdbcInfo {
     @Override
     public String toString() {
         return "JdbcInfo [driver=" + driver + ", url=" + url + ", username=" + username + ", password=" + password
-                + ", table=" + table + ", entity=" + entity + ", camel=" + camel + "]";
+                + ", catalog=" + catalog + ", scheme=" + scheme + ", table=" + table + ", entity=" + entity + ", camel="
+                + camel + "]";
+    }
+
+    public String getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(String catalog) {
+        this.catalog = catalog;
+    }
+
+    public String getScheme() {
+        return scheme;
+    }
+
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
     }
 
     public String getTable() {
