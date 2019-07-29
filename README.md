@@ -41,8 +41,8 @@
 		<typeConvert java="Decimal" jdbc="DECIMAL"/>
 	</typeConvertList>
 	<templateList>
-		<!-- 模板参数,可指定多个,${entity}、${table}参数可以使用 -->
-        <templateItem>
+		<!-- 模板参数,可指定多个,${entity}、${table}参数可以使用,id指定了该templateItem的唯一标识,用于freemarker的参数填充 -->
+        <templateItem id="mysql_template">
         	<!-- 模板文件路径 -->
             <templateFile>codeGenerator/mysql_template.xml</templateFile>
 			<!-- 文件的生成项目 -->

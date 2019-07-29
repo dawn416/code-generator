@@ -27,7 +27,6 @@ import com.fline.generator.util.StringUtil;
 public class TableContext {
 
     private static final Logger LOG = LoggerFactory.getLogger(TableContext.class);
-
     public static final List<TableItem> TABLES = new ArrayList<>();
 
     /**

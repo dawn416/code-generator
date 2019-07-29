@@ -2,7 +2,6 @@ package com.fline.generator;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,20 +28,12 @@ import freemarker.template.TemplateException;
  *
  */
 public class Generator {
-
     private static final Logger LOG = LoggerFactory.getLogger(Generator.class);
 
     private static final String VAR_ENTITY = "${entity}";
     private static final String VAR_TABLE = "${table}";
     public static GeneratorConfig generatorConfig;
     protected static Map<String, Object> customParams;
-
-    public static void main(String[] args) throws Exception {
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("excludeFields", Arrays.asList("id", "name", "code"));
-        Generator.generate("codeGenerator/config.xml", map);
-    }
 
     public static void generate(String configFile, Map<String, Object> param) throws IOException, TemplateException {
         customParams = param;
@@ -65,34 +56,46 @@ public class Generator {
             dataMap.put("customItem", Generator.customParams);
         }
         for (TableItem item : TableContext.TABLES) {
-            LOG.debug("{}", item);
-            Map<String, Object> templateItemMap = new HashMap<>();
-            for (TemplateItem templateItem : generatorConfig.getTemplateList()) {
-                String targetPackage = templateItem.getTargetPackage().replace(VAR_ENTITY, item.getBeanName())
-                        .replace(VAR_TABLE, item.getTableName());
-                String targetFileName = templateItem.getTargetFileName().replace(VAR_ENTITY, item.getBeanName())
-                        .replace(VAR_TABLE, item.getTableName());
-                String templateFile = templateItem.getTemplateFile().replace(VAR_ENTITY, item.getBeanName())
-                        .replace(VAR_TABLE, item.getTableName());
-                templateItem.setTargetPackage(targetPackage);
-                templateItem.setTargetFileName(targetFileName);
-                templateItem.setTemplateFile(templateFile);
-                templateItemMap.put(templateItem.getId(), templateItem);
-            }
-            dataMap.put("templateItem", templateItemMap);
-            for (TemplateItem templateItem : generatorConfig.getTemplateList()) {
-                try {
-                    String path = StringUtil
-                            .pathConvert(templateItem.getTargetProject() + "." + templateItem.getTargetPackage());
-                    JavaFileUtil.createPath(path);
-                    dataMap.put("tableItem", item);
-                    LOG.debug("{}", dataMap);
-                    TemplateManager.createXml(templateItem.getTemplateFile(), path, templateItem.getTargetFileName(),
-                            dataMap);
-                } catch (GenerateException e) {
-                    LOG.error("", e);
+            refactor(dataMap, item);
+        }
+    }
 
-                }
+    /**
+     * 
+     * @since 2019年7月29日 下午3:13:47
+     * @param dataMap
+     * @param item
+     * @throws IOException
+     * @throws TemplateException
+     */
+    private static void refactor(Map<String, Object> dataMap, TableItem item) throws IOException, TemplateException {
+        LOG.debug("{}", item);
+        Map<String, Object> templateItemMap = new HashMap<>();
+        for (TemplateItem templateItem : generatorConfig.getTemplateList()) {
+            String targetPackage = templateItem.getTargetPackage().replace(VAR_ENTITY, item.getBeanName())
+                    .replace(VAR_TABLE, item.getTableName());
+            String targetFileName = templateItem.getTargetFileName().replace(VAR_ENTITY, item.getBeanName())
+                    .replace(VAR_TABLE, item.getTableName());
+            String templateFile = templateItem.getTemplateFile().replace(VAR_ENTITY, item.getBeanName())
+                    .replace(VAR_TABLE, item.getTableName());
+            templateItem.setTargetPackage(targetPackage);
+            templateItem.setTargetFileName(targetFileName);
+            templateItem.setTemplateFile(templateFile);
+            templateItemMap.put(templateItem.getId(), templateItem);
+        }
+        dataMap.put("templateItem", templateItemMap);
+        for (TemplateItem templateItem : generatorConfig.getTemplateList()) {
+            try {
+                String path = StringUtil
+                        .pathConvert(templateItem.getTargetProject() + "." + templateItem.getTargetPackage());
+                JavaFileUtil.createPath(path);
+                dataMap.put("tableItem", item);
+                LOG.debug("{}", dataMap);
+                TemplateManager.createXml(templateItem.getTemplateFile(), path, templateItem.getTargetFileName(),
+                        dataMap);
+            } catch (GenerateException e) {
+                LOG.error("", e);
+
             }
         }
     }
