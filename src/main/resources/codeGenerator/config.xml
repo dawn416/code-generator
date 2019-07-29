@@ -8,7 +8,7 @@
         <password>123456</password>
         <table>big_match</table>
         <entity></entity>
-        <camel>true</camel>
+        <camel>false</camel>
     </jdbcInfo>
     <typeConvertList>
     	<typeConvert java="String" jdbc="VARCHAR"/>
@@ -29,37 +29,37 @@
     	<typeConvert java="BigDecimal" jdbc="DECIMAL"/>
     </typeConvertList>
     <templateList>
-        <templateItem>
+        <templateItem id="mysql_template">
             <templateFile>codeGenerator/mysql_template.xml</templateFile>
             <targetProject>src.main.java</targetProject>
             <targetPackage>com.fline.dao</targetPackage>
             <targetFileName>${entity}Mapper.xml</targetFileName>
         </templateItem>
-        <templateItem>
+        <templateItem id="dao_template">
             <templateFile>codeGenerator/dao_template.java</templateFile>
             <targetProject>src.main.java</targetProject>
             <targetPackage>com.fline.dao</targetPackage>
             <targetFileName>${entity}Mapper.java</targetFileName>
         </templateItem>
-        <templateItem>
+        <templateItem id="service_template">
             <templateFile>codeGenerator/service_template.java</templateFile>
             <targetProject>src.main.java</targetProject>
             <targetPackage>com.fline.service</targetPackage>
             <targetFileName>${entity}Service.java</targetFileName>
         </templateItem>
-        <templateItem>
+        <templateItem id="controller_template">
         	<templateFile>codeGenerator/controller_template.java</templateFile>
         	<targetProject>src.main.java</targetProject>
             <targetPackage>com.fline.controller</targetPackage>
             <targetFileName>${entity}Controller.java</targetFileName>
         </templateItem>
-        <templateItem>
+        <templateItem id="entity_template">
         	<templateFile>codeGenerator/entity_template.java</templateFile>
         	<targetProject>src.main.java</targetProject>
             <targetPackage>com.fline.entity</targetPackage>
             <targetFileName>${entity}.java</targetFileName>
         </templateItem>
-        <templateItem>
+        <templateItem id="serviceImpl_template">
         	<templateFile>codeGenerator/serviceImpl_template.java</templateFile>
         	<targetProject>src.main.java</targetProject>
             <targetPackage>com.fline.service.impl</targetPackage>

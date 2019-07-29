@@ -1,36 +1,44 @@
-﻿<#macro sharp field jdbc><#noparse>#{</#noparse>${field},jdbcType=${jdbc}<#noparse>}</#noparse></#macro>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<#macro sharp field jdbc><#noparse>#{</#noparse>${field},jdbcType=${jdbc}<#noparse>}</#noparse></#macro>
 <#list tableItem.columnList as pk>
 	<#if pk.id>
 		<#assign primaryKey=pk>
 	<#break>
 	</#if>
 </#list>
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fline.security.dao.${tableItem.beanName}Mapper">
-  <resultMap id="BaseResultMap" type="com.fline.security.entity.${tableItem.beanName}">
+<mapper namespace="${templateItem.entity_template.targetPackage}.${tableItem.beanName}Mapper">
+  <resultMap id="BaseResultMap" type="${templateItem.entity_template.targetPackage}.${tableItem.beanName}">
   	<#list tableItem.columnList as pk>
   	<<#if pk.id>id<#else>result</#if> column="${pk.columnName}" jdbcType="${pk.javaType}" property="${pk.fieldName}" />
   	</#list>
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="${primaryKey.javaType}">
     delete from ${tableItem.tableName}
-    where ${primaryKey.columnName} = <@sharp field=primaryKey.fieldName jdbc=primaryKey.jdbcType></@sharp>
+    <where>${primaryKey.columnName} = <@sharp field=primaryKey.fieldName jdbc=primaryKey.jdbcType></@sharp></where>
   </delete>
-  <insert id="insert" parameterType="com.fline.security.entity.SysRole">
+    <update id="updateByPrimaryKey" parameterType="${templateItem.entity_template.targetPackage}.${tableItem.beanName}">
+  	update ${tableItem.tableName}
+  	<set>
+  		<#list tableItem.columnList as pk>
+		<#if !pk.id>${pk.columnName} = ${pk.fieldName},</#if>
+		</#list>
+  	</set>
+  	<where>
+  		${primaryKey.columnName} = <@sharp field=primaryKey.fieldName jdbc=primaryKey.jdbcType></@sharp>
+  	</where>
+  </update>
+  <insert id="insert" parameterType="${templateItem.entity_template.targetPackage}.${tableItem.beanName}">
     insert into sys_role (
-<#list tableItem.columnList as pk><#if pk_has_next>${pk.columnName},<#else>${pk.columnName}</#if><#if pk_index % 3 == 0></#if></#list>
+    <trim suffixOverrides=",">
+	<#list tableItem.columnList as pk>${pk.columnName},</#list>
+	</trim>
 	)
     values ( 
-<#list tableItem.columnList as pk>
-	<#if pk_has_next>
-		<@sharp field=pk.fieldName jdbc=pk.jdbcType></@sharp>,<#else>
-		<@sharp field=pk.fieldName jdbc=pk.jdbcType></@sharp></#if>
-	<#if pk_index % 3 == 0>
-	
-	</#if>
-</#list>
+    <trim suffixOverrides=",">
+		<#list tableItem.columnList as pk>
+			<@sharp field=pk.fieldName jdbc=pk.jdbcType></@sharp>,</#list>
+	</trim>
 	)
   </insert>
-
 </mapper>

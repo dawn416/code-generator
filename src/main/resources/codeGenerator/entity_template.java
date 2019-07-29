@@ -1,4 +1,4 @@
-﻿package ${templateItem.targetPackage};
+﻿package ${templateItem.entity_template.targetPackage};
 
 import java.io.Serializable;
 
@@ -8,9 +8,9 @@ import java.io.Serializable;
 </#list>
 <#if utildate??>import java.util.Date;</#if>
 <#if bigdecimal??>import java.math.BigDecimal;</#if>
-import lombok.Data;
+//import lombok.Data;
 
-@Data
+//@Data
 public class ${tableItem.beanName} implements Serializable {
 
     private static final long serialVersionUID = 1L;

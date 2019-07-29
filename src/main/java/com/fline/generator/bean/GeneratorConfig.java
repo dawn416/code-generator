@@ -2,6 +2,8 @@ package com.fline.generator.bean;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -9,6 +11,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  *
  */
 @XStreamAlias("generator")
+@XmlRootElement(name = "generator")
 public class GeneratorConfig {
     private List<TemplateItem> templateList;
     private JdbcInfo jdbcInfo;

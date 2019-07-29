@@ -1,9 +1,13 @@
 package com.fline.generator;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fline.generator.bean.GeneratorConfig;
 import com.fline.generator.bean.TableItem;
@@ -16,6 +20,8 @@ import com.fline.generator.util.JavaFileUtil;
 import com.fline.generator.util.StringUtil;
 import com.thoughtworks.xstream.XStream;
 
+import freemarker.template.TemplateException;
+
 /**
  * @since 2017年12月6日 下午2:04:18
  * @version 1.0.0
@@ -24,68 +30,68 @@ import com.thoughtworks.xstream.XStream;
  */
 public class Generator {
 
-    /**
-     *
-     */
-    private static final String $_ENTITY = "${entity}";
-    /**
-     *
-     */
-    private static final String $_TABLE = "${table}";
+    private static final Logger LOG = LoggerFactory.getLogger(Generator.class);
+
+    private static final String VAR_ENTITY = "${entity}";
+    private static final String VAR_TABLE = "${table}";
     public static GeneratorConfig generatorConfig;
-    public static Map<String, Object> customParams;
+    protected static Map<String, Object> customParams;
 
     public static void main(String[] args) throws Exception {
 
         Map<String, Object> map = new HashMap<>();
         map.put("excludeFields", Arrays.asList("id", "name", "code"));
-        Generator.generate("codeGenerator/config.xml", null);
+        Generator.generate("codeGenerator/config.xml", map);
     }
 
-    public static void generate(String configFile, Map<String, Object> param) throws Exception {
+    public static void generate(String configFile, Map<String, Object> param) throws IOException, TemplateException {
         customParams = param;
-        try {
-            InputStream resourceAsStream = Generator.class.getClassLoader().getResourceAsStream(configFile);
+        try (InputStream resourceAsStream = Generator.class.getClassLoader().getResourceAsStream(configFile);) {
             XStream xstream = new XStream();
             xstream.autodetectAnnotations(true);
             xstream.alias("generator", GeneratorConfig.class);
             generatorConfig = (GeneratorConfig) xstream.fromXML(resourceAsStream);
-        } catch (Exception e1) {
-            System.out.println("配置文件解析出错");
+        } catch (IOException e1) {
+            LOG.error("读取配置文件出错");
             throw e1;
         }
-        System.out.println(generatorConfig);
+        LOG.debug("{}", generatorConfig);
         for (TypeConvert typeconcert : generatorConfig.getTypeConvertList()) {
             CommonConvertor.map.put(typeconcert.getJdbc(), typeconcert.getJava());
         }
         TableContext.loadTable();
-
+        Map<String, Object> dataMap = new HashMap<>();
+        if (Generator.customParams != null) {
+            dataMap.put("customItem", Generator.customParams);
+        }
         for (TableItem item : TableContext.TABLES) {
-            System.out.println(item);
+            LOG.debug("{}", item);
+            Map<String, Object> templateItemMap = new HashMap<>();
+            for (TemplateItem templateItem : generatorConfig.getTemplateList()) {
+                String targetPackage = templateItem.getTargetPackage().replace(VAR_ENTITY, item.getBeanName())
+                        .replace(VAR_TABLE, item.getTableName());
+                String targetFileName = templateItem.getTargetFileName().replace(VAR_ENTITY, item.getBeanName())
+                        .replace(VAR_TABLE, item.getTableName());
+                String templateFile = templateItem.getTemplateFile().replace(VAR_ENTITY, item.getBeanName())
+                        .replace(VAR_TABLE, item.getTableName());
+                templateItem.setTargetPackage(targetPackage);
+                templateItem.setTargetFileName(targetFileName);
+                templateItem.setTemplateFile(templateFile);
+                templateItemMap.put(templateItem.getId(), templateItem);
+            }
+            dataMap.put("templateItem", templateItemMap);
             for (TemplateItem templateItem : generatorConfig.getTemplateList()) {
                 try {
-                    String targetPackage = templateItem.getTargetPackage().replace($_ENTITY, item.getBeanName())
-                            .replace($_TABLE, item.getTableName());
-                    String targetFileName = templateItem.getTargetFileName().replace($_ENTITY, item.getBeanName())
-                            .replace($_TABLE, item.getTableName());
-                    String templateFile = templateItem.getTemplateFile().replace($_ENTITY, item.getBeanName())
-                            .replace($_TABLE, item.getTableName());
-                    TemplateItem realTemplateItem = new TemplateItem();
-                    realTemplateItem.setTargetFileName(targetFileName);
-                    realTemplateItem.setTemplateFile(templateFile);
-                    realTemplateItem.setTargetPackage(targetPackage);
-                    realTemplateItem.setTargetProject(templateItem.getTargetProject());
-                    String path = StringUtil.pathConvert(templateItem.getTargetProject() + "." + targetPackage);
+                    String path = StringUtil
+                            .pathConvert(templateItem.getTargetProject() + "." + templateItem.getTargetPackage());
                     JavaFileUtil.createPath(path);
-                    Map<String, Object> dataMap = new HashMap<>();
                     dataMap.put("tableItem", item);
-                    dataMap.put("templateItem", realTemplateItem);
-                    if (Generator.customParams != null) {
-                        dataMap.put("customItem", Generator.customParams);
-                    }
-                    TemplateManager.createXml(templateFile, path, targetFileName, dataMap);
+                    LOG.debug("{}", dataMap);
+                    TemplateManager.createXml(templateItem.getTemplateFile(), path, templateItem.getTargetFileName(),
+                            dataMap);
                 } catch (GenerateException e) {
-                    e.printStackTrace();
+                    LOG.error("", e);
+
                 }
             }
         }

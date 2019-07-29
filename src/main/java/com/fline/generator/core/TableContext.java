@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fline.generator.GenerateException;
 import com.fline.generator.Generator;
 import com.fline.generator.bean.ColumnItem;
@@ -23,6 +26,8 @@ import com.fline.generator.util.StringUtil;
  */
 public class TableContext {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TableContext.class);
+
     public static final List<TableItem> TABLES = new ArrayList<>();
 
     /**
@@ -31,7 +36,7 @@ public class TableContext {
      * @param entityName 指定javabean名称，必须在有表名的前提下
      * @throws Exception
      */
-    public static void loadTable() throws Exception {
+    public static void loadTable() {
         String tableName = Generator.generatorConfig.getJdbcInfo().getTable();
         String entityName = Generator.generatorConfig.getJdbcInfo().getEntity();
         try (Connection conn = DBUtil.createConn();) {
@@ -46,7 +51,7 @@ public class TableContext {
                     loadTableDetail(entityName, dbmd, tableRs);
                 }
             }
-            System.out.println("所有表信息加载完成");
+            LOG.debug("所有表信息加载完成");
         } catch (Exception e) {
             throw new GenerateException("加载表信息失败", e);
         }
@@ -57,7 +62,7 @@ public class TableContext {
             throws SQLException {
         String tableName = tableRs.getString("TABLE_NAME");
         String remarks = tableRs.getString("REMARKS");
-        System.out.println("加载" + tableName + "表信息中。。。");
+        LOG.debug("加载{}表信息中。。。", tableName);
         String beanName = null;
         if (StringUtil.isEmpty(entityName)) {
             beanName = StringUtil.underline2Camel(tableName, false);

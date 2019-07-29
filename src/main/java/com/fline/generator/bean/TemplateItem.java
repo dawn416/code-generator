@@ -1,13 +1,19 @@
 package com.fline.generator.bean;
 
+import javax.xml.bind.annotation.XmlType;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * @since 2019年7月25日 下午6:49:53
  *
  */
 @XStreamAlias("templateItem")
+@XmlType(name = "templateItem")
 public class TemplateItem {
+    @XStreamAsAttribute
+    private String id;
     private String targetPackage;
     private String templateFile;
     private String targetFileName;
@@ -15,8 +21,16 @@ public class TemplateItem {
 
     @Override
     public String toString() {
-        return "TemplateItem [targetPackage=" + targetPackage + ", templateFile=" + templateFile + ", targetFileName="
-                + targetFileName + ", targetProject=" + targetProject + "]";
+        return "TemplateItem [id=" + id + ", targetPackage=" + targetPackage + ", templateFile=" + templateFile
+                + ", targetFileName=" + targetFileName + ", targetProject=" + targetProject + "]";
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTargetProject() {
