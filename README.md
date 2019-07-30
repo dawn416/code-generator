@@ -2,10 +2,10 @@
 
 ### 通过xml配置文件和用户自定义的freemarker模板生成代码,支持自定义参数
 
-#####适用于任何使用java连接关系型数据库的项目，不论是mybatis,ibatis,hibernate或是jpa，mybatis-puls等，不论前端后端,每个项目组都可以自定义模板快速生成代码,节约编写基础增删改查的时间
+##### 适用于任何使用java连接关系型数据库的项目，不论是mybatis,ibatis,hibernate或是jpa，mybatis-puls等，不论前端后端,每个项目组都可以自定义模板快速生成代码,节约编写基础增删改查的时间
 
 ------------
-###quick start
+### quick start
 
 运行代码生成器
 
@@ -76,7 +76,7 @@ Generator.generate("codeGenerator/config.xml", map);
 
 ------------
 
-###freemarker模板中的参数
+### freemarker模板中的参数
 例如在freemarker文件中使用`${tableItem.beanName}`即可获取表名
 ```json
 {
@@ -219,5 +219,5 @@ public class BigMatch implements Serializable {
 ------------
 
 
-###帮我改进
-#####欢迎issue和pull request
+### 帮我改进
+##### 欢迎issue和pull request
