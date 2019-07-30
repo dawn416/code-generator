@@ -70,7 +70,6 @@
             <version>1.7.25</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>
@@ -93,6 +92,28 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <configuration>
+                    <validationProperties>
+                        <validationProperty>
+                            <name>validating git dirty</name>
+                            <value>${git.dirty}</value>
+                            <shouldMatchTo>false</shouldMatchTo>
+                        </validationProperty>
+                    </validationProperties>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate-the-git-infos</id>
+                        <goals>
+                            <goal>validateRevision</goal>
+                        </goals>
+                        <phase>package</phase>
                     </execution>
                 </executions>
             </plugin>
