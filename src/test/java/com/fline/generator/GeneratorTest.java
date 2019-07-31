@@ -3,7 +3,6 @@
  */
 package com.fline.generator;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +17,7 @@ public class GeneratorTest {
     @Test
     public void testName() throws Exception {
         Map<String, Object> map = new HashMap<>();
-        map.put("excludeFields", Arrays.asList("id", "name"));
+        // map.put("excludeFields", Arrays.asList("id", "name"));
         Generator.generate("codeGenerator/config.xml", map);
     }
 }
