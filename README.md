@@ -7,15 +7,18 @@
 ------------
 ### quick start
 
-运行代码生成器
+修改src/test/resources/codeGenerator/config.xml中的jdbc信息
+
+运行代码生成器src/test/java/com/fline/generator/GeneratorTest.java
 
 ```java
-Map<String,Object> map = new HashMap<>();
-map.put("key", "value");
+Map<String, Object> map = new HashMap<>();
+// map.put("excludeFields", Arrays.asList("id", "name"));
 Generator.generate("codeGenerator/config.xml", map);
 ```
 第一个参数是xml配置文件名,第二个参数为一个Map,在freemarker中此Map名为customItem,如果需要map中的value,则需要在freemarker中使用`${customItem.key}`来获取,可以用于忽略某些字段等需求
 
+正常运行后F5刷新项目目录在src/test/java下将会出现对应的包和文件
 ------------
 
 ### config.xml配置文件
