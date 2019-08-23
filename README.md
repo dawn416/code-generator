@@ -47,6 +47,8 @@ Generator.generate("codeGenerator/config.xml", map);
         <entity>BigMatch</entity>
         <!-- 属性名是否根据字段转换成驼峰命名法,为true时subject_id将转换为subjectId作为属性(fieldName) -->
         <camel>true</camel>
+        <!-- 模块名 -->
+        <module></module>
     </jdbcInfo>
     <typeConvertList>
         <!-- 指定jdbc转换为java类型的对应关系 -->

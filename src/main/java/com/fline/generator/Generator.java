@@ -32,6 +32,7 @@ public class Generator {
 
     private static final String VAR_ENTITY = "${entity}";
     private static final String VAR_TABLE = "${table}";
+    private static final String VAR_MODULE = "${module}";
     public static GeneratorConfig generatorConfig;
     protected static Map<String, Object> customParams;
 
@@ -73,11 +74,14 @@ public class Generator {
         Map<String, Object> templateItemMap = new HashMap<>();
         for (TemplateItem templateItem : generatorConfig.getTemplateList()) {
             String targetPackage = templateItem.getTargetPackage().replace(VAR_ENTITY, item.getBeanName())
-                    .replace(VAR_TABLE, item.getTableName());
+                    .replace(VAR_TABLE, item.getTableName())
+                    .replace(VAR_MODULE, generatorConfig.getJdbcInfo().getModule());
             String targetFileName = templateItem.getTargetFileName().replace(VAR_ENTITY, item.getBeanName())
-                    .replace(VAR_TABLE, item.getTableName());
+                    .replace(VAR_TABLE, item.getTableName())
+                    .replace(VAR_MODULE, generatorConfig.getJdbcInfo().getModule());
             String templateFile = templateItem.getTemplateFile().replace(VAR_ENTITY, item.getBeanName())
-                    .replace(VAR_TABLE, item.getTableName());
+                    .replace(VAR_TABLE, item.getTableName())
+                    .replace(VAR_MODULE, generatorConfig.getJdbcInfo().getModule());
             templateItem.setTargetPackage(targetPackage);
             templateItem.setTargetFileName(targetFileName);
             templateItem.setTemplateFile(templateFile);

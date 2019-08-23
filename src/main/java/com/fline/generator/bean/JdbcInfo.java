@@ -17,12 +17,21 @@ public class JdbcInfo {
     private String table;
     private String entity;
     private boolean camel;
+    private String module;
 
     @Override
     public String toString() {
         return "JdbcInfo [driver=" + driver + ", url=" + url + ", username=" + username + ", password=" + password
                 + ", catalog=" + catalog + ", scheme=" + scheme + ", table=" + table + ", entity=" + entity + ", camel="
                 + camel + "]";
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 
     public String getCatalog() {
