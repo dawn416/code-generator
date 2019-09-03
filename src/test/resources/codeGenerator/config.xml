@@ -10,6 +10,7 @@
         <table>big_match</table>
         <entity></entity>
         <camel>false</camel>
+        <module>model</module>
     </jdbcInfo>
     <typeConvertList>
         <typeConvert java="String" jdbc="VARCHAR" />
@@ -28,6 +29,7 @@
         <typeConvert java="Date" jdbc="TIME" />
         <typeConvert java="Date" jdbc="TIMESTAMP" />
         <typeConvert java="BigDecimal" jdbc="DECIMAL" />
+        <typeConvert java="Integer" jdbc="BIT" />
     </typeConvertList>
     <templateList>
         <templateItem id="mysql_template">

@@ -18,6 +18,6 @@ public class GeneratorTest {
     public void testName() throws Exception {
         Map<String, Object> map = new HashMap<>();
         // map.put("excludeFields", Arrays.asList("id", "name"));
-        Generator.generate("codeGenerator/config.xml", map);
+        Generator.generate("codeGenerator/config.xml", null);
     }
 }

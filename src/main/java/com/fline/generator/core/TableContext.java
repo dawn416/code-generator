@@ -107,6 +107,9 @@ public class TableContext {
             String dbType = columnRs.getString("TYPE_NAME");
             String remarks = columnRs.getString("REMARKS");
             String javaType = CommonConvertor.dbType2JavaType(dbType);
+            if (javaType == null) {
+                throw new GenerateException(dbType + "没有对应的java类型,请添加配置typeConvert");
+            }
             ColumnItem columnItem = new ColumnItem(columnName, fieldName, dbType, javaType);
             columnItem.setRemarks(remarks);
             tableItem.getColumnList().add(columnItem);

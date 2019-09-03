@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <#macro sharp field jdbc><#noparse>#{</#noparse>${field},jdbcType=${jdbc}<#noparse>}</#noparse></#macro>
 <#list tableItem.columnList as pk>
@@ -7,8 +7,7 @@
 <mapper namespace="${templateItem.entity_template.targetPackage}.${tableItem.beanName}Mapper">
     <resultMap id="BaseResultMap" type="${templateItem.entity_template.targetPackage}.${tableItem.beanName}">
         <#list tableItem.columnList as pk>
-        <<#if pk.id>id<#else>result</#if> column="${pk.columnName}" jdbcType="${pk.javaType}"
-        property="${pk.fieldName}" />
+        <<#if pk.id>id<#else>result</#if> column="${pk.columnName}" property="${pk.fieldName}" />
         </#list>
     </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="${primaryKey.javaType}">
