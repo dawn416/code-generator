@@ -25,7 +25,6 @@ import freemarker.template.TemplateException;
  * @since 2017年12月6日 下午2:04:18
  * @version 1.0.0
  * @author 黎明
- *
  */
 public class Generator {
     private static final Logger LOG = LoggerFactory.getLogger(Generator.class);
@@ -62,7 +61,6 @@ public class Generator {
     }
 
     /**
-     * 
      * @since 2019年7月29日 下午3:13:47
      * @param dataMap
      * @param item

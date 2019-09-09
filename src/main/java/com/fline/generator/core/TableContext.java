@@ -73,6 +73,7 @@ public class TableContext {
         String tableName = tableRs.getString("TABLE_NAME");
         String remarks = tableRs.getString("REMARKS");
         LOG.debug("加载{}表信息中。。。", tableName);
+        dbmd.getIndexInfo(null, "", tableName, true, true);
         String beanName = null;
         if (StringUtil.hasText(entityName)) {
             beanName = StringUtil.underline2Camel(tableName, false);
@@ -106,6 +107,13 @@ public class TableContext {
             }
             String dbType = columnRs.getString("TYPE_NAME");
             String remarks = columnRs.getString("REMARKS");
+            int datasize = columnRs.getInt("COLUMN_SIZE");
+            int digits = columnRs.getInt("DECIMAL_DIGITS");
+            int nullable = columnRs.getInt("NULLABLE");
+            String def = columnRs.getString("COLUMN_DEF");
+            LOG.debug(columnName);
+            LOG.debug("{},{},{},{}", datasize, digits, nullable, def);
+
             String javaType = CommonConvertor.dbType2JavaType(dbType);
             if (javaType == null) {
                 throw new GenerateException(dbType + "没有对应的java类型,请添加配置typeConvert");
