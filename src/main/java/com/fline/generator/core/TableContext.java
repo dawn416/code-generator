@@ -4,17 +4,26 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
 import com.fline.generator.GenerateException;
 import com.fline.generator.Generator;
 import com.fline.generator.bean.ColumnItem;
 import com.fline.generator.bean.TableItem;
+import com.fline.generator.bean.TranslateEntity;
 import com.fline.generator.util.DBUtil;
 import com.fline.generator.util.StringUtil;
 
@@ -62,6 +71,60 @@ public class TableContext {
                 }
             }
             LOG.debug("所有表信息加载完成");
+			TableItem tableItem = TABLES.get(0);
+			String[] sarr = new String[] { "TIMESTAMP", "DATE", "DATETIME" };
+			String[] farr = new String[] { "FLOAT", "DOUBLE" };
+			try (Statement pstmt = conn.createStatement();) {
+				for (ColumnItem col : tableItem.getColumnList()) {
+					if ("id".equals(col.getColumnName()) || "import_date".equals(col.getColumnName())) {
+						continue;
+					}
+					String flag = "common";
+					for (String string : sarr) {
+						if (string.equalsIgnoreCase(col.getJdbcType())) {
+							flag = "date";
+							break;
+						}
+					}
+					for (String string : farr) {
+						if (string.equalsIgnoreCase(col.getJdbcType())) {
+							flag = "float";
+							break;
+						}
+					}
+					String datasize = "(" + col.getDataSize() + ")";
+					if ("date".equals(flag)) {
+						datasize = "";
+					}
+					if ("float".equals(flag)) {
+						datasize = "(" + col.getDataSize() + "," + col.getDigits() + ")";
+					}
+					// String sql = "ALTER TABLE `" + tableItem.getTableName() +
+					// "` MODIFY COLUMN `" + col.getColumnName()
+					// + "` " + col.getJdbcType() + datasize + " COMMENT '" +
+					// col.getColumnName()
+					// + "';";
+					// LOG.debug("{}", sql);
+					try (CloseableHttpClient client = HttpClientBuilder.create().build();) {
+						HttpGet get = new HttpGet(
+								"http://fanyi.youdao.com/translate?&doctype=json&type=AUTO&i=" + col.getColumnName());
+						try (CloseableHttpResponse res = client.execute(get);) {
+							HttpEntity entity = res.getEntity();
+							String string = EntityUtils.toString(entity);
+							TranslateEntity parseObject = JSON.parseObject(string, TranslateEntity.class);
+							String tgt = parseObject.getTranslateResult().get(0).get(0).getTgt();
+							String replaceAll = tgt.toLowerCase().replaceAll(" ", "_");
+							LOG.debug(replaceAll);
+							String sqlname = "alter table `" + tableItem.getTableName() + "` change `"
+									+ col.getColumnName() + "` `" + replaceAll + "` " + col.getJdbcType() + datasize
+									+ " COMMENT '" + col.getColumnName() + "';";
+							int executename = pstmt.executeUpdate(sqlname);
+						}
+					} catch (Exception e) {
+						LOG.error("翻译失败", e);
+					}
+				}
+			}
         } catch (Exception e) {
             throw new GenerateException("加载表信息失败", e);
         }
@@ -111,14 +174,16 @@ public class TableContext {
             int digits = columnRs.getInt("DECIMAL_DIGITS");
             int nullable = columnRs.getInt("NULLABLE");
             String def = columnRs.getString("COLUMN_DEF");
-            LOG.debug(columnName);
-            LOG.debug("{},{},{},{}", datasize, digits, nullable, def);
+			LOG.debug(columnName);
+			// LOG.debug("{},{},{},{}", datasize, digits, nullable, def);
 
             String javaType = CommonConvertor.dbType2JavaType(dbType);
             if (javaType == null) {
                 throw new GenerateException(dbType + "没有对应的java类型,请添加配置typeConvert");
             }
             ColumnItem columnItem = new ColumnItem(columnName, fieldName, dbType, javaType);
+			columnItem.setDataSize(datasize);
+			columnItem.setDigits(digits);
             columnItem.setRemarks(remarks);
             tableItem.getColumnList().add(columnItem);
         }

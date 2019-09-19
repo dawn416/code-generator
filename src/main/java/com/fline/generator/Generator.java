@@ -51,13 +51,13 @@ public class Generator {
             CommonConvertor.map.put(typeconcert.getJdbc(), typeconcert.getJava());
         }
         TableContext.loadTable();
-        Map<String, Object> dataMap = new HashMap<>();
-        if (Generator.customParams != null) {
-            dataMap.put("customItem", Generator.customParams);
-        }
-        for (TableItem item : TableContext.TABLES) {
-            refactor(dataMap, item);
-        }
+		// Map<String, Object> dataMap = new HashMap<>();
+		// if (Generator.customParams != null) {
+		// dataMap.put("customItem", Generator.customParams);
+		// }
+		// for (TableItem item : TableContext.TABLES) {
+		// refactor(dataMap, item);
+		// }
     }
 
     /**

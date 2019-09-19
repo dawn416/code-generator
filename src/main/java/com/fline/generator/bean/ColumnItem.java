@@ -12,6 +12,8 @@ public class ColumnItem {
     private String jdbcType;
     private String javaType;
     private String remarks;
+	private int dataSize;
+	private int digits;
     private boolean id;
 
     /**
@@ -35,7 +37,23 @@ public class ColumnItem {
                 + ", javaType=" + javaType + ", remarks=" + remarks + ", id=" + id + "]";
     }
 
-    public boolean isId() {
+	public int getDataSize() {
+		return dataSize;
+	}
+
+	public void setDataSize(int dataSize) {
+		this.dataSize = dataSize;
+	}
+
+	public int getDigits() {
+		return digits;
+	}
+
+	public void setDigits(int digits) {
+		this.digits = digits;
+	}
+
+	public boolean isId() {
         return id;
     }
 
