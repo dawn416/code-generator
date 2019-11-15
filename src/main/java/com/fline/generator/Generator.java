@@ -2,7 +2,9 @@ package com.fline.generator;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -70,6 +72,7 @@ public class Generator {
     private static void refactor(Map<String, Object> dataMap, TableItem item) throws IOException, TemplateException {
         LOG.debug("{}", item);
         Map<String, Object> templateItemMap = new HashMap<>();
+		List<TemplateItem> list = new ArrayList<>();
         for (TemplateItem templateItem : generatorConfig.getTemplateList()) {
             String targetPackage = templateItem.getTargetPackage().replace(VAR_ENTITY, item.getBeanName())
                     .replace(VAR_TABLE, item.getTableName())
@@ -80,13 +83,17 @@ public class Generator {
             String templateFile = templateItem.getTemplateFile().replace(VAR_ENTITY, item.getBeanName())
                     .replace(VAR_TABLE, item.getTableName())
                     .replace(VAR_MODULE, generatorConfig.getJdbcInfo().getModule());
-            templateItem.setTargetPackage(targetPackage);
-            templateItem.setTargetFileName(targetFileName);
-            templateItem.setTemplateFile(templateFile);
-            templateItemMap.put(templateItem.getId(), templateItem);
+			TemplateItem itemCopy = new TemplateItem();
+			itemCopy.setId(templateItem.getId());
+			itemCopy.setTargetProject(templateItem.getTargetProject());
+			itemCopy.setTargetPackage(targetPackage);
+			itemCopy.setTargetFileName(targetFileName);
+			itemCopy.setTemplateFile(templateFile);
+			list.add(itemCopy);
+			templateItemMap.put(templateItem.getId(), itemCopy);
         }
         dataMap.put("templateItem", templateItemMap);
-        for (TemplateItem templateItem : generatorConfig.getTemplateList()) {
+		for (TemplateItem templateItem : list) {
             try {
                 String path = StringUtil
                         .pathConvert(templateItem.getTargetProject() + "." + templateItem.getTargetPackage());
