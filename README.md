@@ -2,7 +2,9 @@
 
 ### 通过xml配置文件和用户自定义的freemarker模板生成代码,支持自定义参数
 
-##### 适用于任何使用java连接关系型数据库的项目，不论是mybatis,ibatis,hibernate或是jpa，mybatis-puls等，不论前端后端,每个项目组都可以自定义模板快速生成代码,节约编写基础增删改查的时间
+##### 适用于任何使用java连接关系型数据库的项目，不论是mybatis,ibatis,hibernate或是jpa，mybatis-puls等，不论前端后端,每个项目组都可以自定义模板快速生成代码,节约编写基础增删改查的时间。
+
+##### 除了用作代码生成,也可以写模板生成数据库说明文档
 
 ------------
 ### quick start
@@ -112,14 +114,24 @@ Generator.generate("codeGenerator/config.xml", map);
 			"jdbcType": "INT", //jdbc类型
 			"javaType": "Integer", //java类型
 			"remarks": "主键", //注释
-			"id": true //是否为主键
+			"id": true, //是否为主键
+			"datasize": 10, //列的大小
+			"digits": 0, //小数部分的位数
+			"nullable": true, //是否可为空
+			"defaultValue": "", //默认值
+			"autoincrement": true //是否自增
 		}, {
 			"columnName": "name",
 			"fieldName": "name",
 			"jdbcType": "VARCHAR",
 			"javaType": "String",
 			"remarks": "名称",
-			"id": false
+			"id": false,
+			"datasize": 10,
+			"digits": 0,
+			"nullable": true,
+			"defaultValue": "",
+			"autoincrement": false
 		}]
 	}
 }

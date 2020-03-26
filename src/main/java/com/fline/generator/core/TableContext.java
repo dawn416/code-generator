@@ -111,8 +111,11 @@ public class TableContext {
             int digits = columnRs.getInt("DECIMAL_DIGITS");
             int nullable = columnRs.getInt("NULLABLE");
             String def = columnRs.getString("COLUMN_DEF");
+            String isNullable = columnRs.getString("IS_NULLABLE");
+            String isAutoincrement = columnRs.getString("IS_AUTOINCREMENT");
+
             LOG.debug(columnName);
-            LOG.debug("{},{},{},{}", datasize, digits, nullable, def);
+            LOG.debug("{},{},{},{},{},{}", datasize, digits, nullable, def, isNullable, isAutoincrement);
 
             String javaType = CommonConvertor.dbType2JavaType(dbType);
             if (javaType == null) {
@@ -120,6 +123,15 @@ public class TableContext {
             }
             ColumnItem columnItem = new ColumnItem(columnName, fieldName, dbType, javaType);
             columnItem.setRemarks(remarks);
+            columnItem.setDatasize(datasize);
+            columnItem.setDigits(digits);
+            if ("YES".equals(isNullable)) {
+                columnItem.setNullable(true);
+            }
+            columnItem.setDefaultValue(def);
+            if ("YES".equals(isAutoincrement)) {
+                columnItem.setAutoincrement(true);
+            }
             tableItem.getColumnList().add(columnItem);
         }
     }

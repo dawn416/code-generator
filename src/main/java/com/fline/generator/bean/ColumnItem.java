@@ -13,6 +13,11 @@ public class ColumnItem {
     private String javaType;
     private String remarks;
     private boolean id;
+    private int datasize;
+    private int digits;
+    private boolean nullable;
+    private String defaultValue;
+    private boolean autoincrement;
 
     /**
      * @param columnName
@@ -105,6 +110,46 @@ public class ColumnItem {
      */
     public void setJavaType(String javaType) {
         this.javaType = javaType;
+    }
+
+    public int getDatasize() {
+        return datasize;
+    }
+
+    public void setDatasize(int datasize) {
+        this.datasize = datasize;
+    }
+
+    public int getDigits() {
+        return digits;
+    }
+
+    public void setDigits(int digits) {
+        this.digits = digits;
+    }
+
+    public boolean isNullable() {
+        return nullable;
+    }
+
+    public void setNullable(boolean nullable) {
+        this.nullable = nullable;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public boolean isAutoincrement() {
+        return autoincrement;
+    }
+
+    public void setAutoincrement(boolean autoincrement) {
+        this.autoincrement = autoincrement;
     }
 
 }
