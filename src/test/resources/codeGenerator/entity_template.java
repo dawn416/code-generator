@@ -1,4 +1,4 @@
-﻿﻿package ${templateItem.entity_template.targetPackage};
+package ${templateItem.entity_template.targetPackage};
 
 import java.io.Serializable;
 

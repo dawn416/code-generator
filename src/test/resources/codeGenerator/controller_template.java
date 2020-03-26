@@ -1,4 +1,4 @@
-﻿package ${templateItem.controller_template.targetPackage};
+package ${templateItem.controller_template.targetPackage};
 
 //import org.springframework.stereotype.Controller;
 
@@ -9,7 +9,7 @@ import ${templateItem.entity_template.targetPackage}.${tableItem.beanName};
 <#break>
 </#if>
 </#list>
- 
+
 //@Controller
 public class ${tableItem.beanName}Controller {
 

@@ -1,4 +1,4 @@
-﻿package ${templateItem.serviceImpl_template.targetPackage};
+package ${templateItem.serviceImpl_template.targetPackage};
 
 import ${templateItem.dao_template.targetPackage}.${tableItem.beanName}Mapper;
 import ${templateItem.entity_template.targetPackage}.${tableItem.beanName};

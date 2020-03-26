@@ -1,4 +1,4 @@
-﻿package ${templateItem.service_template.targetPackage};
+package ${templateItem.service_template.targetPackage};
 
 import ${templateItem.entity_template.targetPackage}.${tableItem.beanName};
 <#list tableItem.columnList as pk>
